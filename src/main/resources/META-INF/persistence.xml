@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="CmpMgmt_PersistenceUnit">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	<!-- <class>com.companymanagement.model.Company</class> <class>com.companymanagement.model.ApplicationRequest</class> 
+		<class>com.companymanagement.model.Vendor</class> <class>com.companymanagement.model.Employee</class> 
+		<class>com.companymanagement.model.ApplicationRequestCategory</class> <class>com.companymanagement.model.ApplicationRequestStatus</class> 
+		<class>com.companymanagement.model.Document</class> -->
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.search.default.directory_provider"
+				value="filesystem" />
+			<property name="hibernate.search.default.indexBase" value="\lucene\luceneData" />
+			<property name="hibernate.c3p0.max_size" value="300" />
+			<property name="hibernate.c3p0.min_size" value="1" />
+			<property name="hibernate.c3p0.acquire_increment" value="1" />
+			<property name="hibernate.c3p0.idle_test_period" value="300" />
+			<property name="hibernate.c3p0.max_statements" value="0" />
+			<property name="hibernate.c3p0.timeout" value="100" />
+		</properties>
+	</persistence-unit>
+</persistence>
