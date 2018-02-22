@@ -8,8 +8,6 @@
           Department</a></li>
       <li><a href="/systemadmin/createNotificationType">Create
           Notification</a></li>
-      <li><a href="/systemadmin/createPermission">Create
-          Permission</a></li>
       <li><a href="/systemadmin/viewPendingVendorApplicants">View
           pending Vendor applicants</a></li>
       <li><a href="/systemadmin/viewAllVendors">View all Vendor

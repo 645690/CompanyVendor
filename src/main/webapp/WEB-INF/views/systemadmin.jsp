@@ -19,6 +19,7 @@
           <tr>
             <th>Reg No</th>
             <th>Name</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -27,8 +28,9 @@
             <tr>
               <td>${company.regNo}</td>
               <td>${company.name}</td>
+              <td>${company.status}</td>
               <td style="width: 10%"><a
-                href="viewCompany?regNo=${company.regNo}"><button
+                href="/systemadmin/viewCompany?regNo=${company.regNo}"><button
                     class='btn btn-primary'>View Info</button></a></td>
             </tr>
           </c:forEach>
