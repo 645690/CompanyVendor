@@ -14,9 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.model.Account;
 import com.companymanagement.model.AccountRole;
+import com.companymanagement.model.Company;
 import com.companymanagement.model.Vendor;
 import com.companymanagement.service.AccountRoleService;
 import com.companymanagement.service.AccountService;
+import com.companymanagement.service.CompanyService;
 import com.companymanagement.service.NotificationPreferedTypeService;
 import com.companymanagement.service.VendorService;
 
@@ -31,8 +33,11 @@ public class AccountController {
 	VendorService vendorService;
 
 	@Autowired
+	CompanyService companyService;
+
+	@Autowired
 	AccountRoleService arService;
-	
+
 	@Autowired
 	NotificationPreferedTypeService nptService;
 
@@ -50,13 +55,29 @@ public class AccountController {
 		return mav;
 	}
 
-	@Transactional
 	@RequestMapping(value = "/applyToBeVendor/submit", method = RequestMethod.POST)
 	public ModelAndView applyToBeVendorSubmit(@ModelAttribute("vendor") Vendor vendor,
 			@SessionAttribute("account") Account account) {
 		vendor.setStatus("pending");
 		vendor.setAccount(account);
 		vendorService.saveOrUpdate(vendor);
+		ModelAndView mav = new ModelAndView("redirect:/user");
+		return mav;
+	}
+
+	@RequestMapping(value = "/applyToBeCompany", method = RequestMethod.GET)
+	public ModelAndView applyToBeCompany() {
+		ModelAndView mav = new ModelAndView("applyToBeCompany");
+		mav.addObject("company", new Company());
+		return mav;
+	}
+
+	@RequestMapping(value = "/applyToBeCompany/submit", method = RequestMethod.POST)
+	public ModelAndView applyToBeCompanySubmit(@ModelAttribute("company") Company company,
+			@SessionAttribute("account") Account account) {
+		company.setStatus("pending");
+		company.setAccount(account);
+		companyService.saveOrUpdate(company);
 		ModelAndView mav = new ModelAndView("redirect:/user");
 		return mav;
 	}
@@ -83,17 +104,11 @@ public class AccountController {
 		return mav;
 	}
 
-	@Transactional
 	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
 	public ModelAndView registerProcess(@ModelAttribute("login") Account account,
 			@ModelAttribute("role") AccountRole role) {
 		ModelAndView mav = null;
 		try {
-			String accRole = role.getName();
-			role = arService.findAccountRole(role.getName());
-			if (role == null) {
-				role = new AccountRole(accRole);
-			}
 			account.setAccountRole(role);
 			accountService.create(account);
 			String url = "redirect:login";
@@ -116,7 +131,7 @@ public class AccountController {
 		if (findAccount != null) {
 			String ar = findAccount.getAccountRole().getName();
 			String url = "redirect:user";
-			if (ar.equalsIgnoreCase("company")) {
+			if (ar.equalsIgnoreCase("employee") || ar.equalsIgnoreCase("company")) {
 				url = "redirect:company";
 			} else if (ar.equalsIgnoreCase("vendor")) {
 				url = "redirect:vendor";

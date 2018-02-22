@@ -9,10 +9,14 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 @Entity
-@NamedQuery(name = "Company.findRegNo", query = "SELECT c FROM Company c WHERE c.regNo=:regNo")
+@NamedQueries({ @NamedQuery(name = "Company.findRegNo", query = "SELECT c FROM Company c WHERE c.regNo=:regNo"),
+		@NamedQuery(name = "Company.findByAccount", query = "SELECT c FROM Company c WHERE c.account=:account"),
+		@NamedQuery(name = "Company.findByStatus", query = "SELECT c FROM Company c WHERE c.status=:status") })
 public class Company extends Base {
 
 	private static final long serialVersionUID = 6837969751019580537L;
@@ -20,11 +24,14 @@ public class Company extends Base {
 	@Column(unique = true)
 	private Long regNo;
 	private String name;
+	private String status;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "regNo"),
-				inverseJoinColumns = @JoinColumn(name = "vendor_id", referencedColumnName = "regNo"))
+	@JoinTable(joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "regNo"), inverseJoinColumns = @JoinColumn(name = "vendor_id", referencedColumnName = "regNo"))
 	private List<Vendor> venList = new ArrayList<Vendor>();
+
+	@OneToOne(cascade = CascadeType.MERGE)
+	private Account account;
 
 	public Company() {
 	}
@@ -62,43 +69,20 @@ public class Company extends Base {
 		this.regNo = regNo;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((regNo == null) ? 0 : regNo.hashCode());
-		result = prime * result + ((venList == null) ? 0 : venList.hashCode());
-		return result;
+	public String getStatus() {
+		return status;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Company other = (Company) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (regNo == null) {
-			if (other.regNo != null)
-				return false;
-		} else if (!regNo.equals(other.regNo))
-			return false;
-		if (venList == null) {
-			if (other.venList != null)
-				return false;
-		} else if (!venList.equals(other.venList))
-			return false;
-		return true;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	
-	
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
 
 }

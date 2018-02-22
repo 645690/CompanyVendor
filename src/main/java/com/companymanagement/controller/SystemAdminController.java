@@ -51,10 +51,24 @@ public class SystemAdminController {
 	}
 
 	@RequestMapping(value = "/viewCompany", method = RequestMethod.GET)
-	public ModelAndView viewCompanyInfo() {
-		ModelAndView mav = new ModelAndView("companyInfo");
-		List<Company> cList = companyService.findAll();
-		mav.addObject("companyList", cList);
+	public ModelAndView viewCompanyInfo(@RequestParam(required = false, name = "regNo") Long regNo) {
+		ModelAndView mav = new ModelAndView("viewCompanyApplicantDetails");
+		Company company = companyService.findCompanyByRegNo(regNo);
+		mav.addObject("company", company);
+		return mav;
+	}
+
+	@RequestMapping(value = "/acceptCompanyApplicant", method = RequestMethod.GET)
+	public ModelAndView acceptCompanyApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
+		companyService.acceptByRegNo(regNo);
+		ModelAndView mav = new ModelAndView("redirect:/systemadmin");
+		return mav;
+	}
+
+	@RequestMapping(value = "/rejectCompanyApplicant", method = RequestMethod.GET)
+	public ModelAndView rejectCompanyApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
+		companyService.rejectByRegNo(regNo);
+		ModelAndView mav = new ModelAndView("redirect:/systemadmin");
 		return mav;
 	}
 
@@ -75,16 +89,16 @@ public class SystemAdminController {
 	}
 
 	@RequestMapping(value = "/viewVendorApplicantDetails", method = RequestMethod.GET)
-	public ModelAndView viewVendorApplicantDetails(@RequestParam(required = false, name = "regNo") Long vaRegNo) {
+	public ModelAndView viewVendorApplicantDetails(@RequestParam(required = false, name = "regNo") Long regNo) {
 		ModelAndView mav = new ModelAndView("viewVendorApplicantDetails");
-		Vendor vendor = vendorService.findVendorByRegNo(vaRegNo);
+		Vendor vendor = vendorService.findVendorByRegNo(regNo);
 		mav.addObject("vendor", vendor);
 		return mav;
 	}
 
 	@RequestMapping(value = "/acceptVendorApplicant", method = RequestMethod.GET)
-	public ModelAndView acceptVendorApplicant(@RequestParam(required = false, name = "regNo") Long vaRegNo) {
-		vendorService.acceptByRegNo(vaRegNo);
+	public ModelAndView acceptVendorApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
+		vendorService.acceptByRegNo(regNo);
 		ModelAndView mav = new ModelAndView("redirect:/systemadmin/viewPendingVendorApplicants");
 		return mav;
 	}
