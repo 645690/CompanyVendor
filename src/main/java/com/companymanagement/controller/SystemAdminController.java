@@ -62,6 +62,7 @@ public class SystemAdminController {
 	public ModelAndView acceptCompanyApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
 		companyService.acceptByRegNo(regNo);
 		ModelAndView mav = new ModelAndView("redirect:/systemadmin");
+		asd
 		return mav;
 	}
 
