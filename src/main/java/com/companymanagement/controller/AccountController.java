@@ -131,7 +131,7 @@ public class AccountController {
 		if (findAccount != null) {
 			String ar = findAccount.getAccountRole().getName();
 			String url = "redirect:user";
-			if (ar.equalsIgnoreCase("employee") || ar.equalsIgnoreCase("company")) {
+			if (ar.equalsIgnoreCase("employee") || ar.equalsIgnoreCase("companyadmin")) {
 				url = "redirect:company";
 			} else if (ar.equalsIgnoreCase("vendor")) {
 				url = "redirect:vendor";
