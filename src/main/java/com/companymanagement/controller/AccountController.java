@@ -147,6 +147,7 @@ public class AccountController {
 	public ModelAndView loginProcess(@ModelAttribute("login") Account account, ModelMap model) {
 		ModelAndView mav = null;
 
+		
 		Account findAccount = accountService.findAccount(account.getUsername(), account.getPassword());
 		if (findAccount != null) {
 			String ar = findAccount.getAccountRole().getName();
