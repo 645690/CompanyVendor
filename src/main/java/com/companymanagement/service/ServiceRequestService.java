@@ -3,6 +3,7 @@ package com.companymanagement.service;
 import java.util.List;
 
 import com.companymanagement.common.CompanyMgmtException;
+import com.companymanagement.model.Company;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 
@@ -17,5 +18,7 @@ public interface ServiceRequestService extends BaseService {
 	List<ServiceRequestApplication> findServiceRequestApplicationsByRegNo(Long regNo) throws CompanyMgmtException;
 
 	void addServiceRequestApplication(Long srRegNo, ServiceRequestApplication srApp) throws CompanyMgmtException;
+
+	List<ServiceRequest> findServiceRequestsByCompany(Company company) throws CompanyMgmtException;
 
 }

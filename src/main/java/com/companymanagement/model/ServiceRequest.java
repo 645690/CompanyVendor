@@ -7,11 +7,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
-@NamedQuery(name = "ServiceRequest.findRegNo", query = "SELECT sr FROM ServiceRequest sr WHERE sr.regNo=:regNo")
+@NamedQueries({
+		@NamedQuery(name = "ServiceRequest.findRegNo", query = "SELECT sr FROM ServiceRequest sr WHERE sr.regNo=:regNo"),
+		@NamedQuery(name = "ServiceRequest.findByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company") })
 public class ServiceRequest extends Base {
 
 	private static final long serialVersionUID = -4697330149497262611L;
@@ -34,7 +37,7 @@ public class ServiceRequest extends Base {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "Category", referencedColumnName = "name")
 	private ServiceRequestCategory category;
-	
+
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "Department", referencedColumnName = "name")
 	private Department department;
@@ -173,7 +176,5 @@ public class ServiceRequest extends Base {
 		return "ServiceRequest [regNo=" + regNo + ", name=" + name + ", srAppList=" + srAppList + ", company=" + company
 				+ ", status=" + status + ", category=" + category + ", department=" + department + "]";
 	}
-
-	
 
 }
