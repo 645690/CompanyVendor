@@ -17,13 +17,23 @@ import com.companymanagement.dao.JPADAO;
 import com.companymanagement.dao.ServiceRequestDAO;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
+import com.companymanagement.model.ServiceRequestCategory;
+import com.companymanagement.model.ServiceRequestStatus;
+import com.companymanagement.service.ServiceRequestCategoryService;
 import com.companymanagement.service.ServiceRequestService;
+import com.companymanagement.service.ServiceRequestStatusService;
 
 @Service("ServiceRequestService")
 public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequest> implements ServiceRequestService {
 
 	@Autowired
 	protected ServiceRequestDAO dao;
+
+	@Autowired
+	protected ServiceRequestCategoryService serviceRequestCategoryService;
+
+	@Autowired
+	protected ServiceRequestStatusService serviceRequestStatusService;
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -42,6 +52,11 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 	@Override
 	@Transactional
 	public void saveOrUpdate(ServiceRequest serviceRequest) throws CompanyMgmtException {
+		ServiceRequestCategory src = serviceRequestCategoryService
+				.findServiceRequestCategoryByName(serviceRequest.getCategory().getName());
+		serviceRequest.setCategory(src);
+		ServiceRequestStatus srs = serviceRequestStatusService.findServiceRequestStatusByName("Pending");
+		serviceRequest.setStatus(srs);
 		ServiceRequest findServiceRequest = findServiceRequestByRegNo(serviceRequest.getRegNo());
 		if (findServiceRequest != null) {
 			findServiceRequest.setName(serviceRequest.getName());
@@ -50,7 +65,6 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 			findServiceRequest.setSrAppList(serviceRequest.getSrAppList());
 			dao.merge(findServiceRequest);
 		} else {
-			System.out.println("persisting");
 			dao.persist(serviceRequest);
 		}
 	}

@@ -38,10 +38,11 @@ public class ServiceRequestController {
 	@Transactional
 	@RequestMapping(value = "/createNewServiceRequest", method = RequestMethod.POST)
 	public ModelAndView createNewServiceRequest(@ModelAttribute("serviceRequest") ServiceRequest serviceRequest) {
-		ServiceRequestCategory src = srcs.findServiceRequestCategoryByName("IT");
-		serviceRequest.setCategory(src);
-		ServiceRequestStatus srs = srss.findServiceRequestStatusByName("Pending");
-		serviceRequest.setStatus(srs);
+//		ServiceRequestCategory src = srcs.findServiceRequestCategoryByName("IT");
+//		serviceRequest.setCategory(src);
+//		ServiceRequestStatus srs = srss.findServiceRequestStatusByName("Pending");
+//		serviceRequest.setStatus(srs);
+		System.out.println(serviceRequest);
 		serviceRequestService.saveOrUpdate(serviceRequest);
 		ModelAndView mav = new ModelAndView("redirect:company");
 		return mav;
