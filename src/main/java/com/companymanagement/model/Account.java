@@ -10,6 +10,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Transient;
 
 @Entity
 @NamedQueries({
@@ -22,7 +23,8 @@ public class Account extends Base {
 	@Column(unique = true)
 	private String username;
 	private String password;
-
+	@Transient
+	String token;
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "account_Role", referencedColumnName = "name")
 	private AccountRole accountRole;
@@ -69,6 +71,14 @@ public class Account extends Base {
 
 	public void setPermission(Set<Permission> permission) {
 		this.permission = permission;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	@Override

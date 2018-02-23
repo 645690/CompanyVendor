@@ -1,6 +1,11 @@
 package com.companymanagement.controller;
 
 import java.io.IOException;
+import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +25,7 @@ import com.companymanagement.model.AccountRole;
 import com.companymanagement.model.Company;
 import com.companymanagement.model.Employee;
 import com.companymanagement.model.Vendor;
+import com.companymanagement.notification.NotificationService;
 import com.companymanagement.service.AccountRoleService;
 import com.companymanagement.service.AccountService;
 import com.companymanagement.service.CompanyService;
@@ -48,6 +54,9 @@ public class AccountController {
 
 	@Autowired
 	NotificationPreferedTypeService nptService;
+
+	@Autowired
+	NotificationService notificationService;
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public ModelAndView showUser() {
@@ -143,11 +152,75 @@ public class AccountController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
-	public ModelAndView loginProcess(@ModelAttribute("login") Account account, ModelMap model) {
+	@RequestMapping(value = "/otp", method = RequestMethod.POST)
+	public ModelAndView loginProcess(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("login") Account login) throws Exception {
 		ModelAndView mav = null;
+		Account acc = accountService.findAccountByUsername(login.getUsername());
+		// User user = userService.validateUser(login);
+		if (login.getUsername().equalsIgnoreCase(acc.getUsername())
+				&& login.getPassword().equalsIgnoreCase(acc.getPassword())) {
+			mav = new ModelAndView("login_otp");
+			Random rand = new Random();
+			String token = String.format("%04d", rand.nextInt(10000));
+			String[] cc = {};
+			notificationService.sendMail("YongMeng.Sim@cognizant.com", cc, "Test Mail", "OTP is " + token);
+			session.setAttribute("token", token);
+			session.setAttribute("Account", acc);
+			mav.addObject("token", "");
 
-		
+		} else {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "Username or Password is wrong!!");
+		}
+		return mav;
+	}
+
+	@RequestMapping(value = "/otpProcess", method = RequestMethod.POST)
+	public ModelAndView otpProcess(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "token", required = false) String token, ModelMap model) throws Exception {
+		ModelAndView mav = null;
+		System.out.println(token);
+
+		String storedToken = (String) session.getAttribute("token");
+		System.out.println(storedToken);
+		if (storedToken.equalsIgnoreCase(token)) {
+			session.setAttribute("token", "");
+			Account findAccount = (Account) session.getAttribute("Account");
+			if (findAccount != null) {
+				String ar = findAccount.getAccountRole().getName();
+				String url = "redirect:user";
+
+				if (ar.equalsIgnoreCase("employee")) {
+					url = "redirect:company";
+					Employee employee = employeeService.findEmployeeByAccount(findAccount);
+					model.addAttribute("employee", employee);
+				} else if (ar.equalsIgnoreCase("companyadmin")) {
+					url = "redirect:company";
+					Company company = companyService.findCompanyByAccount(findAccount);
+					model.addAttribute("company", company);
+				} else if (ar.equalsIgnoreCase("vendor")) {
+					url = "redirect:vendor";
+				} else if (ar.equalsIgnoreCase("systemadmin")) {
+					url = "redirect:systemadmin";
+				}
+				mav = new ModelAndView(url);
+			}
+		} else {
+			session.setAttribute("Account", "");
+			session.setAttribute("token", "");
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "OTP entered is incorrect");
+		}
+		return mav;
+	}
+
+	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
+	public ModelAndView loginProcess(HttpSession session, @ModelAttribute("login") Account account, ModelMap model) {
+		ModelAndView mav = null;
+		// testing for otp
 		Account findAccount = accountService.findAccount(account.getUsername(), account.getPassword());
 		if (findAccount != null) {
 			String ar = findAccount.getAccountRole().getName();
@@ -177,4 +250,5 @@ public class AccountController {
 
 		return mav;
 	}
+
 }
