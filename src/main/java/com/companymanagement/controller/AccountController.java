@@ -1,14 +1,17 @@
 package com.companymanagement.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.companymanagement.common.CompanyMgmtException;
@@ -57,9 +60,21 @@ public class AccountController {
 
 	@RequestMapping(value = "/applyToBeVendor/submit", method = RequestMethod.POST)
 	public ModelAndView applyToBeVendorSubmit(@ModelAttribute("vendor") Vendor vendor,
-			@SessionAttribute("account") Account account) {
+			@SessionAttribute("account") Account account,
+			@RequestParam("file") MultipartFile file/*Used for file upload*/) {
 		vendor.setStatus("pending");
 		vendor.setAccount(account);
+		//Used for file upload
+				try {
+					byte[] data = file.getBytes();
+					String fN = file.getName();
+					String oN = file.getOriginalFilename();
+					vendor.setDocByteArray(data);
+					vendor.setDocFileExtention(oN.substring(oN.lastIndexOf(".")+1, oN.length() ));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		vendorService.saveOrUpdate(vendor);
 		ModelAndView mav = new ModelAndView("redirect:/user");
 		return mav;
@@ -131,7 +146,7 @@ public class AccountController {
 		if (findAccount != null) {
 			String ar = findAccount.getAccountRole().getName();
 			String url = "redirect:user";
-			if (ar.equalsIgnoreCase("employee") || ar.equalsIgnoreCase("company")) {
+			if (ar.equalsIgnoreCase("employee") || ar.equalsIgnoreCase("company") || ar.equalsIgnoreCase("companyadmin")) {
 				url = "redirect:company";
 			} else if (ar.equalsIgnoreCase("vendor")) {
 				url = "redirect:vendor";

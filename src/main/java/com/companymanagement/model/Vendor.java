@@ -12,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = "Vendor.findVendorReg", query = "SELECT v FROM Vendor v WHERE v.regNo=:regNo"),
@@ -27,6 +28,37 @@ public class Vendor extends Base {
 	private String email;
 	private String contact;
 	private String status;
+
+	//Used for file upload
+	private String docFileUrl;
+	@Transient
+	private byte docByteArray[];
+	@Transient
+	private String docFileExtention;
+	
+	public String getDocFileUrl() {
+		return docFileUrl;
+	}
+
+	public void setDocFileUrl(String docFileUrl) {
+		this.docFileUrl = docFileUrl;
+	}
+
+	public byte[] getDocByteArray() {
+		return docByteArray;
+	}
+
+	public void setDocByteArray(byte[] docByteArray) {
+		this.docByteArray = docByteArray;
+	}
+
+	public String getDocFileExtention() {
+		return docFileExtention;
+	}
+
+	public void setDocFileExtention(String docFileExtention) {
+		this.docFileExtention = docFileExtention;
+	}
 
 	@JoinColumn(name = "npt_name", referencedColumnName = "name")
 	@ManyToOne(cascade = CascadeType.MERGE)

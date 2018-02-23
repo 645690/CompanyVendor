@@ -1,5 +1,7 @@
 package com.companymanagement.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +10,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.companymanagement.util.ConfUtil;
 import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.dao.JPADAO;
 import com.companymanagement.dao.VendorDAO;
@@ -32,8 +36,8 @@ public class VendorServiceImpl extends BaseServiceImpl<Long, Vendor> implements 
 	protected AccountRoleService accRoleService;
 
 	@Autowired
-	protected NotificationPreferedTypeService nptService; 
-	
+	protected NotificationPreferedTypeService nptService;
+
 	@Autowired
 	protected AccountService accService;
 
@@ -93,17 +97,28 @@ public class VendorServiceImpl extends BaseServiceImpl<Long, Vendor> implements 
 		return vendors;
 	}
 
-
 	@Override
 	@Transactional
 	public void saveOrUpdate(Vendor vendor) throws CompanyMgmtException {
 		vendor.setNpt(nptService.findNotificationPreferedType(vendor.getNpt().getName()));
 		Vendor findVendor = findVendorByAccount(vendor.getAccount());
+		
+		//try catch for Upload Document
+		try {
+			String url = getDocumentURL(vendor);
+			if (url != null) {
+				vendor.setDocFileUrl(url);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new CompanyMgmtException("Can not save vendor documents", e);
+		}
 		if (findVendor != null) {
 			findVendor.setName(vendor.getName());
 			findVendor.setStatus(vendor.getStatus());
 			findVendor.setContact(vendor.getContact());
-			findVendor.setCertList(vendor.getCertList());
+			//findVendor.setCertList(vendor.getCertList());
+			findVendor.setDocFileUrl(vendor.getDocFileUrl());
 			findVendor.setAccount(vendor.getAccount());
 			findVendor.setNpt(vendor.getNpt());
 			findVendor.setEmail(vendor.getEmail());
@@ -111,6 +126,25 @@ public class VendorServiceImpl extends BaseServiceImpl<Long, Vendor> implements 
 		} else {
 			dao.persist(vendor);
 		}
+	}
+
+	// For uploading of file
+	private String getDocumentURL(Vendor vendor) throws IOException {
+		String locToSave = ConfUtil.get("fileServerLocation");
+		System.out.println(locToSave);
+		if (vendor.getDocByteArray() != null && vendor.getDocFileExtention() != null) {
+			String path = locToSave + File.separator + vendor.getName() + "." + vendor.getDocFileExtention();
+			File file = new File(path);
+			FileUtils.writeByteArrayToFile(file, vendor.getDocByteArray());
+			System.out.println(ConfUtil.get("fileServerWebURL"));
+
+			String webUrl = ConfUtil.get("fileServerWebURL") + vendor.getName() + "."
+					+ vendor.getDocFileExtention();
+			return webUrl;
+		}
+
+		return null;
+		// FileUtils.w
 	}
 
 	@Override
@@ -139,6 +173,23 @@ public class VendorServiceImpl extends BaseServiceImpl<Long, Vendor> implements 
 	public void deleteByRegNo(Vendor vendor) throws CompanyMgmtException {
 		Vendor findVendor = findVendorByRegNo(vendor.getRegNo());
 		if (findVendor != null) {
+			if(findVendor.getDocFileUrl()!=null)
+			{	
+				String url = findVendor.getDocFileUrl();
+				if(url!= null && url.trim().length() !=0  ) {
+					String locToSave = ConfUtil.get("fileServerLocation");
+					String path = locToSave + File.separator+findVendor.getName()+"."+url.substring(url.lastIndexOf(".") +1, url.length());
+					File file =  new File(path);
+					
+					try {
+						FileUtils.forceDelete(file);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						//do nothing
+					}
+				}
+			}
 			dao.remove(findVendor);
 		}
 

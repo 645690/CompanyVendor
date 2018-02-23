@@ -16,8 +16,8 @@
     <div class='panel panel-primary'>
       <div class='panel-heading'>Apply to be Vendor</div>
       <div class='panel-body'>
-        <form method="post" action="/applyToBeVendor/submit"
-          modelAttribute="vendor">
+        <form method="post" action="applyToBeVendor/submit"
+          modelAttribute="vendor" enctype="multipart/form-data">
           <div class="form-group">
             <label for="name" class="control-label">Reg No</label>
             <form:input id="name" path="vendor.regNo" name="name"
@@ -50,6 +50,11 @@
               <form:options items="${nptList}" itemValue="name"
                 itemLabel="name" />
             </form:select>
+            <span class="help-block"></span>
+          </div>
+          <div class="form-group">
+            <label for="name" class="control-label">Upload relevant Documents</label>
+            <input type="file" name="file" />
             <span class="help-block"></span>
           </div>
           <button type="submit" class="btn btn-success btn-block">Apply
