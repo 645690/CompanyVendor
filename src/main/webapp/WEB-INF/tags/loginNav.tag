@@ -4,8 +4,8 @@
       <%-- <li><img
         src='${pageContext.request.contextPath}/images/Cognizant_LOGO.png'
         style="height: 45px"></li> --%>
-      <li><a href="/login">Login</a></li>
-      <li><a href="/register">Register</a></li>
+      <li><a href="login">Login</a></li>
+      <li><a href="register">Register</a></li>
     </ul>
   </div>
 </nav>

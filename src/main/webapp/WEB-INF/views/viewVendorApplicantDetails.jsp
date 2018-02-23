@@ -42,12 +42,12 @@
         </div>
         <div class='row'>
           <div class='col-md-2'>
-            <a href="/systemadmin/acceptVendorApplicant?regNo=${vendor.regNo}">
+            <a href="acceptVendorApplicant?regNo=${vendor.regNo}">
               <button class='btn btn-primary'>Accept</button>
             </a>
           </div>
           <div class='col-md-2'>
-            <a href="/systemadmin/rejectVendorApplicant?regNo=${vendor.regNo}">
+            <a href="rejectVendorApplicant?regNo=${vendor.regNo}">
               <button class='btn btn-primary'>Reject</button>
             </a>
           </div>

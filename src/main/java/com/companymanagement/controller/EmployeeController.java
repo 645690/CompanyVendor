@@ -38,7 +38,7 @@ public class EmployeeController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/employee/profile", method = RequestMethod.GET)
+	@RequestMapping(value = "/employeeprofile", method = RequestMethod.GET)
 	public ModelAndView showProfile(@SessionAttribute("account") Account account) {
 		ModelAndView mav = new ModelAndView("employeeprofile");
 		Employee employee = employeeService.findEmployeeByAccount(account);

@@ -1,16 +1,16 @@
 <nav class="navbar navbar-default">
   <div class='container-fluid'>
     <ul class='nav navbar-nav mr-auto'>
-      <li><a href="/systemadmin">Home</a></li>
-      <li><a href="/systemadmin/createAccountRole">Create
+      <li><a href="systemadmin">Home</a></li>
+      <li><a href="createAccountRole">Create
           Account Role</a></li>
-      <li><a href="/systemadmin/createDepartment">Create
+      <li><a href="createDepartment">Create
           Department</a></li>
-      <li><a href="/systemadmin/createNotificationType">Create
+      <li><a href="createNotificationType">Create
           Notification</a></li>
-      <li><a href="/systemadmin/viewPendingVendorApplicants">View
+      <li><a href="viewPendingVendorApplicants">View
           pending Vendor applicants</a></li>
-      <li><a href="/systemadmin/viewAllVendors">View all Vendor
+      <li><a href="viewAllVendors">View all Vendor
           applicants</a></li>
     </ul>
     <ul class='nav navbar-nav navbar-right'>

@@ -30,7 +30,7 @@
               <td>${vendor.name}</td>
               <td>${vendor.status}</td>
               <td style="width: 10%"><a
-                href="/systemadmin/viewVendorApplicantDetails?regNo=${vendor.regNo}"><button
+                href="viewVendorApplicantDetails?regNo=${vendor.regNo}"><button
                     class='btn btn-primary'>Details</button></a></td>
             </tr>
           </c:forEach>

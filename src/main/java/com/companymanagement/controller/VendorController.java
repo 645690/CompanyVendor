@@ -19,7 +19,6 @@ import com.companymanagement.service.VendorService;
 
 @Controller
 @SessionAttributes("account")
-@RequestMapping(value = "/vendor")
 public class VendorController {
 
 	@Autowired
@@ -31,7 +30,7 @@ public class VendorController {
 	@Autowired
 	ServiceRequestService serviceRequestService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/vendor", method = RequestMethod.GET)
 	public ModelAndView showCompany(@SessionAttribute("account") Account account) {
 		ModelAndView mav = new ModelAndView("vendor");
 		List<ServiceRequest> srList = serviceRequestService.findAll();
@@ -39,7 +38,7 @@ public class VendorController {
 		return mav;
 	}
 
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	@RequestMapping(value = "/vendorprofile", method = RequestMethod.GET)
 	public ModelAndView showProfile(@SessionAttribute("account") Account account) {
 		ModelAndView mav = new ModelAndView("vendorprofile");
 		Vendor vendor = vendorService.findVendorByAccount(account);

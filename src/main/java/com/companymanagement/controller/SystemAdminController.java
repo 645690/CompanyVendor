@@ -24,7 +24,6 @@ import com.companymanagement.service.VendorService;
 
 @Controller
 @SessionAttributes("account")
-@RequestMapping(value = "/systemadmin")
 public class SystemAdminController {
 
 	@Autowired
@@ -42,7 +41,7 @@ public class SystemAdminController {
 	@Autowired
 	NotificationPreferedTypeService nptService;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/systemadmin",method = RequestMethod.GET)
 	public ModelAndView showAllCompany() {
 		ModelAndView mav = new ModelAndView("systemadmin");
 		List<Company> cList = companyService.findAll();
@@ -99,14 +98,14 @@ public class SystemAdminController {
 	@RequestMapping(value = "/acceptVendorApplicant", method = RequestMethod.GET)
 	public ModelAndView acceptVendorApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
 		vendorService.acceptByRegNo(regNo);
-		ModelAndView mav = new ModelAndView("redirect:/systemadmin/viewPendingVendorApplicants");
+		ModelAndView mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
 		return mav;
 	}
 
 	@RequestMapping(value = "/rejectVendorApplicant", method = RequestMethod.GET)
 	public ModelAndView rejectVendorApplicant(@RequestParam(required = false, name = "regNo") Long vaRegNo) {
 		vendorService.rejectByRegNo(vaRegNo);
-		ModelAndView mav = new ModelAndView("redirect:/systemadmin/viewPendingVendorApplicants");
+		ModelAndView mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
 		return mav;
 	}
 

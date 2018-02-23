@@ -16,7 +16,7 @@
     <div class='panel panel-primary'>
       <div class='panel-heading'>Create Department</div>
       <div class='panel-body'>
-        <form method="post" action="/systemadmin/createDepartment/submit"
+        <form method="post" action="createDepartment/submit"
           modelAttribute="department">
           <div class="form-group">
             <label for="name" class="control-label">Department Name</label>
