@@ -18,10 +18,12 @@ import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.model.Account;
 import com.companymanagement.model.AccountRole;
 import com.companymanagement.model.Company;
+import com.companymanagement.model.Employee;
 import com.companymanagement.model.Vendor;
 import com.companymanagement.service.AccountRoleService;
 import com.companymanagement.service.AccountService;
 import com.companymanagement.service.CompanyService;
+import com.companymanagement.service.EmployeeService;
 import com.companymanagement.service.NotificationPreferedTypeService;
 import com.companymanagement.service.VendorService;
 
@@ -37,6 +39,9 @@ public class AccountController {
 
 	@Autowired
 	CompanyService companyService;
+
+	@Autowired
+	EmployeeService employeeService;
 
 	@Autowired
 	AccountRoleService arService;
@@ -147,8 +152,14 @@ public class AccountController {
 			String ar = findAccount.getAccountRole().getName();
 			String url = "redirect:user";
 
-			if (ar.equalsIgnoreCase("employee") || ar.equalsIgnoreCase("companyadmin")) {
+			if (ar.equalsIgnoreCase("employee")) {
 				url = "redirect:company";
+				Employee employee = employeeService.findEmployeeByAccount(findAccount);
+				model.addAttribute("employee", employee);
+			} else if (ar.equalsIgnoreCase("companyadmin")) {
+				url = "redirect:company";
+				Company company = companyService.findCompanyByAccount(findAccount);
+				model.addAttribute("company", company);
 			} else if (ar.equalsIgnoreCase("vendor")) {
 				url = "redirect:vendor";
 			} else if (ar.equalsIgnoreCase("systemadmin")) {

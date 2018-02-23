@@ -51,6 +51,20 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 
 	@Override
 	@Transactional
+	public void addServiceRequestApplication(Long srRegNo, ServiceRequestApplication serviceRequestApplication)
+			throws CompanyMgmtException {
+		ServiceRequestStatus srs = serviceRequestStatusService.findServiceRequestStatusByName("Pending");
+		serviceRequestApplication.setStatus(srs);
+		ServiceRequest findServiceRequest = findServiceRequestByRegNo(srRegNo);
+		if (findServiceRequest != null) {
+			findServiceRequest.addServiceRequestApplication(serviceRequestApplication);
+			dao.merge(findServiceRequest);
+		} else
+			throw new CompanyMgmtException("Service Request not found");
+	}
+
+	@Override
+	@Transactional
 	public void saveOrUpdate(ServiceRequest serviceRequest) throws CompanyMgmtException {
 		ServiceRequestCategory src = serviceRequestCategoryService
 				.findServiceRequestCategoryByName(serviceRequest.getCategory().getName());

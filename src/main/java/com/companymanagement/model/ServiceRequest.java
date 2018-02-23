@@ -23,19 +23,19 @@ public class ServiceRequest extends Base {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<ServiceRequestApplication> srAppList = new ArrayList<ServiceRequestApplication>();
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "company_regNo", referencedColumnName = "regNo")
 	private Company company;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "Status", referencedColumnName = "name")
 	private ServiceRequestStatus status;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "Category", referencedColumnName = "name")
 	private ServiceRequestCategory category;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "Department", referencedColumnName = "name")
 	private Department department;
 

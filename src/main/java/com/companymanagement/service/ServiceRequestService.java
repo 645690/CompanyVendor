@@ -16,4 +16,6 @@ public interface ServiceRequestService extends BaseService {
 
 	List<ServiceRequestApplication> findServiceRequestApplicationsByRegNo(Long regNo) throws CompanyMgmtException;
 
+	void addServiceRequestApplication(Long srRegNo, ServiceRequestApplication srApp) throws CompanyMgmtException;
+
 }
