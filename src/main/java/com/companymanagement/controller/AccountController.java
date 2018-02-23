@@ -61,20 +61,20 @@ public class AccountController {
 	@RequestMapping(value = "/applyToBeVendor/submit", method = RequestMethod.POST)
 	public ModelAndView applyToBeVendorSubmit(@ModelAttribute("vendor") Vendor vendor,
 			@SessionAttribute("account") Account account,
-			@RequestParam("file") MultipartFile file/*Used for file upload*/) {
+			@RequestParam("file") MultipartFile file/* Used for file upload */) {
 		vendor.setStatus("pending");
 		vendor.setAccount(account);
-		//Used for file upload
-				try {
-					byte[] data = file.getBytes();
-					String fN = file.getName();
-					String oN = file.getOriginalFilename();
-					vendor.setDocByteArray(data);
-					vendor.setDocFileExtention(oN.substring(oN.lastIndexOf(".")+1, oN.length() ));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		// Used for file upload
+		try {
+			byte[] data = file.getBytes();
+			String fN = file.getName();
+			String oN = file.getOriginalFilename();
+			vendor.setDocByteArray(data);
+			vendor.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		vendorService.saveOrUpdate(vendor);
 		ModelAndView mav = new ModelAndView("redirect:/user");
 		return mav;

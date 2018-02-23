@@ -3,15 +3,18 @@ package com.companymanagement.util;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
+import org.springframework.util.ResourceUtils;
+
 public class ConfUtil {
-	
+
 	static Properties props = new Properties();
-	
+
 	static {
 		try {
-			FileInputStream fis = new FileInputStream("config.properties");
+			FileInputStream fis = new FileInputStream(ResourceUtils.getFile("classpath:config.properties"));
 			props.load(fis);
 			fis.close();
 		} catch (FileNotFoundException e) {
@@ -22,7 +25,7 @@ public class ConfUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String get(String key) {
 		return props.getProperty(key);
 	}
