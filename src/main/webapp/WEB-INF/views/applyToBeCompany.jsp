@@ -16,7 +16,7 @@
     <div class='panel panel-primary'>
       <div class='panel-heading'>Apply to be Company</div>
       <div class='panel-body'>
-        <form method="post" action="/applyToBeCompany/submit"
+        <form method="post" action="applyToBeCompany/submit"
           modelAttribute="company">
           <div class="form-group">
             <label for="name" class="control-label">Reg No</label>

@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -29,7 +30,7 @@ public class Account extends Base {
 	@JoinColumn(name = "account_Role", referencedColumnName = "name")
 	private AccountRole accountRole;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "permission", referencedColumnName = "name")
 	private Set<Permission> permission;
 

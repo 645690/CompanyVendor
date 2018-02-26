@@ -12,7 +12,8 @@ import javax.persistence.OneToOne;
 @Entity
 @NamedQueries({
 @NamedQuery(name = "Employee.findRegNo", query = "SELECT e FROM Employee e WHERE e.regNo=:regNo"),
-@NamedQuery(name = "Employee.findByAccount", query = "SELECT e FROM Employee e WHERE e.account=:account")})
+@NamedQuery(name = "Employee.findByAccount", query = "SELECT e FROM Employee e WHERE e.account=:account"),
+@NamedQuery(name = "Employee.findByCompany", query = "SELECT e FROM Employee e WHERE e.company=:company")})
 public class Employee extends Base {
 
 	private static final long serialVersionUID = 4204280378306876956L;
@@ -28,11 +29,11 @@ public class Employee extends Base {
 	private Department department;
 
 	@JoinColumn(name = "account_id")
-	@OneToOne(cascade = CascadeType.MERGE)
+	@OneToOne(cascade = CascadeType.ALL)
 	private Account account;
 
 	@JoinColumn(name = "company_regNo", referencedColumnName = "regNo")
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	private Company company;
 
 	public Employee() {
