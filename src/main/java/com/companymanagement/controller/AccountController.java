@@ -34,7 +34,7 @@ import com.companymanagement.service.NotificationPreferedTypeService;
 import com.companymanagement.service.VendorService;
 
 @Controller
-@SessionAttributes("account")
+@SessionAttributes({ "account", "employee", "company" })
 public class AccountController {
 
 	@Autowired
@@ -135,11 +135,14 @@ public class AccountController {
 
 	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
 	public ModelAndView registerProcess(@ModelAttribute("login") Account account,
-			@ModelAttribute("role") AccountRole role) {
+			@ModelAttribute("role") AccountRole role) throws Exception {
 		ModelAndView mav = null;
 		try {
 			account.setAccountRole(role);
 			accountService.create(account);
+			String[] cc = {};
+			notificationService.sendMail("songnian.tay@cognizant.com", cc, "Registered Account",
+					"Thank you for registering " + account.getUsername());
 			String url = "redirect:login";
 			mav = new ModelAndView(url);
 			mav.addObject("login", account);
