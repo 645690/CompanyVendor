@@ -2,7 +2,8 @@
   <div class='container-fluid'>
     <ul class='nav navbar-nav mr-auto'>
       <li><a href="vendor">Home</a></li>
-      <li><a href="r_application">Application Request</a></li>
+      <li><a href="createApplicationRequest">Create Application
+          Request</a></li>
     </ul>
     <ul class='nav navbar-nav navbar-right'>
       <li><a href="vendorprofile">Profile</a></li>
