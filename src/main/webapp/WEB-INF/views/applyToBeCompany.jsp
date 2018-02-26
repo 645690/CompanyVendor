@@ -17,7 +17,7 @@
       <div class='panel-heading'>Apply to be Company</div>
       <div class='panel-body'>
         <form method="post" action="applyToBeCompany/submit"
-          modelAttribute="company">
+          modelAttribute="company" enctype="multipart/form-data">
           <div class="form-group">
             <label for="name" class="control-label">Reg No</label>
             <form:input id="name" path="company.regNo" name="name"
@@ -28,6 +28,12 @@
             <label for="name" class="control-label">Company Name</label>
             <form:input id="name" path="company.name" name="name"
               required="true" cssClass="form-control" />
+            <span class="help-block"></span>
+          </div>
+			<!-- for uploading document(2) -->
+          <div class="form-group">
+            <label for="name" class="control-label">Upload relevant Documents</label>
+            <input type="file" name="file" />
             <span class="help-block"></span>
           </div>
           <button type="submit" class="btn btn-success btn-block">Apply

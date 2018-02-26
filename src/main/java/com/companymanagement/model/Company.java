@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
 @NamedQueries({ @NamedQuery(name = "Company.findRegNo", query = "SELECT c FROM Company c WHERE c.regNo=:regNo"),
@@ -25,6 +26,13 @@ public class Company extends Base {
 	private Long regNo;
 	private String name;
 	private String status;
+
+	// Used for file upload + setter getter (1)
+	private String docFileUrl;
+	@Transient
+	private byte docByteArray[];
+	@Transient
+	private String docFileExtention;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "regNo"), inverseJoinColumns = @JoinColumn(name = "vendor_id", referencedColumnName = "regNo"))
@@ -41,48 +49,72 @@ public class Company extends Base {
 		this.name = name;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<Vendor> getVenList() {
-		return venList;
-	}
-
-	public void setVenList(List<Vendor> venList) {
-		this.venList = venList;
-	}
-
 	public void addVendor(Vendor vendor) {
 		venList.add(vendor);
-	}
-
-	public Long getRegNo() {
-		return regNo;
-	}
-
-	public void setRegNo(Long regNo) {
-		this.regNo = regNo;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public Account getAccount() {
 		return account;
 	}
 
+	public byte[] getDocByteArray() {
+		return docByteArray;
+	}
+
+	public String getDocFileExtention() {
+		return docFileExtention;
+	}
+
+	public String getDocFileUrl() {
+		return docFileUrl;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Long getRegNo() {
+		return regNo;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public List<Vendor> getVenList() {
+		return venList;
+	}
+
 	public void setAccount(Account account) {
 		this.account = account;
+	}
+
+	public void setDocByteArray(byte[] docByteArray) {
+		this.docByteArray = docByteArray;
+	}
+
+	public void setDocFileExtention(String docFileExtention) {
+		this.docFileExtention = docFileExtention;
+	}
+
+	public void setDocFileUrl(String docFileUrl) {
+		this.docFileUrl = docFileUrl;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setRegNo(Long regNo) {
+		this.regNo = regNo;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setVenList(List<Vendor> venList) {
+		this.venList = venList;
 	}
 
 	

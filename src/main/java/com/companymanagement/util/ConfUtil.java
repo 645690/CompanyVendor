@@ -14,6 +14,8 @@ public class ConfUtil {
 	static {
 		try {
 			FileInputStream fis = new FileInputStream(ResourceUtils.getFile("classpath:config.properties"));
+			// used when you put config.properties into target folder
+			// FileInputStream fis = new FileInputStream("config.properties");
 			props.load(fis);
 			fis.close();
 		} catch (FileNotFoundException e) {
