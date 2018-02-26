@@ -157,7 +157,7 @@ public class AccountController {
 			@ModelAttribute("login") Account login) throws Exception {
 		ModelAndView mav = null;
 		Account acc = accountService.findAccountByUsername(login.getUsername());
-		// User user = userService.validateUser(login);
+
 		if (login.getUsername().equalsIgnoreCase(acc.getUsername())
 				&& login.getPassword().equalsIgnoreCase(acc.getPassword())) {
 			mav = new ModelAndView("login_otp");
@@ -206,6 +206,7 @@ public class AccountController {
 					url = "redirect:systemadmin";
 				}
 				mav = new ModelAndView(url);
+				model.addAttribute("account", findAccount);
 			}
 		} else {
 			session.setAttribute("Account", "");
