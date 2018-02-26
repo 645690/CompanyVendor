@@ -73,7 +73,6 @@ public class AccountServiceImpl extends BaseServiceImpl<Long, Account> implement
 	}
 
 	@Override
-	@Transactional
 	public Account findAccount(String username, String password) throws CompanyMgmtException {
 		Map<String, String> queryParams = new HashMap<String, String>();
 		queryParams.put("username", username);

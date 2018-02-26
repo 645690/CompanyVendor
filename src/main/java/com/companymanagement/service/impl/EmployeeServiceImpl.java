@@ -15,6 +15,7 @@ import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.dao.EmployeeDAO;
 import com.companymanagement.dao.JPADAO;
 import com.companymanagement.model.Account;
+import com.companymanagement.model.Company;
 import com.companymanagement.model.Employee;
 import com.companymanagement.service.EmployeeService;
 
@@ -91,6 +92,16 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Long, Employee> impleme
 			return null;
 		}
 		return employees.get(0);
+	}
+
+	@Override
+	public List<Employee> findEmployeeByCompany(Company company) {
+		Map<String, Company> queryParams = new HashMap<String, Company>();
+		queryParams.put("company", company);
+		
+		List<Employee> employeeList = findByNamedQueryAndNamedParams("Employee.findByCompany", queryParams);
+		
+		return employeeList;
 	}
 
 }

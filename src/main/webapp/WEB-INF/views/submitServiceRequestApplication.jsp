@@ -16,7 +16,8 @@
     <div class='panel panel-primary'>
       <div class='panel-heading'>Create Service Request</div>
       <div class='panel-body'>
-        <form method="post" action="createNewServiceRequestApplication"
+        <form method="post"
+          action="createNewServiceRequestApplication?serviceRequestRegNo=${serviceRequestRegNo}"
           modelAttribute="serviceRequestApplication">
           <div class="form-group">
             <label for="regNo" class="control-label">Register No</label>

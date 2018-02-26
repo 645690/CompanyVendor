@@ -17,7 +17,7 @@
       <div class='panel-heading'>Create Department</div>
       <div class='panel-body'>
         <form method="post"
-          action="/systemadmin/createNotificationType/submit"
+          action="createNotificationType/submit"
           modelAttribute="notification">
           <div class="form-group">
             <label for="name" class="control-label">Notification

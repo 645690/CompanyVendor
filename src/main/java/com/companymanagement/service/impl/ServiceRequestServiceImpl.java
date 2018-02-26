@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.dao.JPADAO;
 import com.companymanagement.dao.ServiceRequestDAO;
+import com.companymanagement.model.Company;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 import com.companymanagement.model.ServiceRequestCategory;
@@ -51,6 +52,20 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 
 	@Override
 	@Transactional
+	public void addServiceRequestApplication(Long srRegNo, ServiceRequestApplication serviceRequestApplication)
+			throws CompanyMgmtException {
+		ServiceRequestStatus srs = serviceRequestStatusService.findServiceRequestStatusByName("Pending");
+		serviceRequestApplication.setStatus(srs);
+		ServiceRequest findServiceRequest = findServiceRequestByRegNo(srRegNo);
+		if (findServiceRequest != null) {
+			findServiceRequest.addServiceRequestApplication(serviceRequestApplication);
+			dao.merge(findServiceRequest);
+		} else
+			throw new CompanyMgmtException("Service Request not found");
+	}
+
+	@Override
+	@Transactional
 	public void saveOrUpdate(ServiceRequest serviceRequest) throws CompanyMgmtException {
 		ServiceRequestCategory src = serviceRequestCategoryService
 				.findServiceRequestCategoryByName(serviceRequest.getCategory().getName());
@@ -67,6 +82,20 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		} else {
 			dao.persist(serviceRequest);
 		}
+	}
+
+	@Override
+	@Transactional
+	public List<ServiceRequest> findServiceRequestsByCompany(Company company) throws CompanyMgmtException {
+		Map<String, Company> queryParams = new HashMap<String, Company>();
+		queryParams.put("company", company);
+
+		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findByCompany",
+				queryParams);
+		if (serviceRequests.size() == 0) {
+			return null;
+		}
+		return serviceRequests;
 	}
 
 	@Override

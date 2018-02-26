@@ -35,13 +35,13 @@
         <div class='row'>
           <div class='col-md-2'>
             <a
-              href="/systemadmin/acceptCompanyApplicant?regNo=${company.regNo}">
+              href="acceptCompanyApplicant?regNo=${company.regNo}">
               <button class='btn btn-primary'>Accept</button>
             </a>
           </div>
           <div class='col-md-2'>
             <a
-              href="/systemadmin/rejectCompanyApplicant?regNo=${company.regNo}">
+              href="rejectCompanyApplicant?regNo=${company.regNo}">
               <button class='btn btn-primary'>Reject</button>
             </a>
           </div>

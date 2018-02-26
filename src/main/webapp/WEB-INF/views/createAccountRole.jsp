@@ -16,7 +16,7 @@
     <div class='panel panel-primary'>
       <div class='panel-heading'>Create Account Role</div>
       <div class='panel-body'>
-        <form method="post" action="/systemadmin/createAccountRole/submit"
+        <form method="post" action="createAccountRole/submit"
           modelAttribute="accountRole">
           <div class="form-group">
             <label for="name" class="control-label">Account Role Name</label>
