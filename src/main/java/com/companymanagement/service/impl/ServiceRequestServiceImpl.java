@@ -16,7 +16,6 @@ import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.dao.JPADAO;
 import com.companymanagement.dao.ServiceRequestDAO;
 import com.companymanagement.model.Company;
-import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 import com.companymanagement.model.ServiceRequestCategory;
@@ -83,22 +82,6 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		} else {
 			dao.persist(serviceRequest);
 		}
-	}
-
-	@Override
-	@Transactional
-	public List<ServiceRequest> findServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
-			throws CompanyMgmtException {
-		Map<String, Object> queryParams = new HashMap<String, Object>();
-		queryParams.put("company", employee.getCompany());
-		queryParams.put("department", employee.getDepartment());
-
-		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findByDepartmentAndCompany",
-				queryParams);
-		if (serviceRequests.size() == 0) {
-			return null;
-		}
-		return serviceRequests;
 	}
 
 	@Override

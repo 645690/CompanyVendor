@@ -14,8 +14,7 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ServiceRequest.findRegNo", query = "SELECT sr FROM ServiceRequest sr WHERE sr.regNo=:regNo"),
-		@NamedQuery(name = "ServiceRequest.findByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company"),
-		@NamedQuery(name = "ServiceRequest.findByDepartmentAndCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company AND sr.department=:department") })
+		@NamedQuery(name = "ServiceRequest.findByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company") })
 public class ServiceRequest extends Base {
 
 	private static final long serialVersionUID = -4697330149497262611L;
