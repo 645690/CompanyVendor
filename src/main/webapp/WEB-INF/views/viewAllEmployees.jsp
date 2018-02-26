@@ -24,6 +24,7 @@
 			<th>Contact</th>
 			<th>Department</th>
 			<th>Role</th>
+			<th colspan="2">Action</th>
           </tr>
         </thead>
 		
@@ -36,6 +37,11 @@
 					<td><c:out value="${employee.contact}" /></td>
 					<td><c:out value="${employee.department.name}" /></td>
 					<td><c:out value="${employee.account.accountRole.name}" /></td>
+					<td style="width: 10%">
+						<a href="viewEmployeeDetails?regNo=${employee.regNo}">
+							<button class='btn btn-primary'>Details</button>
+						</a>
+					</td>
 				</tr>
 				</c:forEach>
 			</tbody>

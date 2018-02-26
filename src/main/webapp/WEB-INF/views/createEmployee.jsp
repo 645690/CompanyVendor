@@ -47,8 +47,7 @@
 		  <div class="form-group">
             <label for="department" class="control-label">Department</label>
             <form:select path="employee.department.name" cssClass="form-control">
-              <form:options items="${departmentList}" itemValue="name"
-                itemLabel="name" />
+              <form:options items="${departmentList}" itemValue="name" itemLabel="name" />
             </form:select>
             <span class="help-block"></span>
           </div>
