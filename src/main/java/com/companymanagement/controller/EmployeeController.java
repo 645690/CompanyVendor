@@ -1,9 +1,7 @@
 package com.companymanagement.controller;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +21,7 @@ import com.companymanagement.model.Department;
 import com.companymanagement.model.Employee;
 import com.companymanagement.model.Permission;
 import com.companymanagement.model.ServiceRequest;
+import com.companymanagement.notification.NotificationService;
 import com.companymanagement.service.AccountRoleService;
 import com.companymanagement.service.AccountService;
 import com.companymanagement.service.CompanyService;
@@ -50,6 +50,9 @@ public class EmployeeController {
 
 	@Autowired
 	ServiceRequestService serviceRequestService;
+	
+	@Autowired
+	NotificationService notificationService;
 
 	@RequestMapping(value = "/company", method = RequestMethod.GET)
 	public ModelAndView showCompany(@SessionAttribute("account") Account account) {
@@ -81,7 +84,7 @@ public class EmployeeController {
 	
 	@Transactional
 	@RequestMapping(value = "/createNewEmployee", method = RequestMethod.POST)
-	public ModelAndView createNewEmployee(@SessionAttribute("account") Account compAdminAccount, @ModelAttribute("employee") Employee employee, @ModelAttribute("permission") Permission permission)
+	public ModelAndView createNewEmployee(@SessionAttribute("account") Account compAdminAccount, @ModelAttribute("employee") Employee employee, @ModelAttribute("permission") Permission permission) throws Exception
 	{
 		ModelAndView mav = null;
 		
@@ -132,6 +135,11 @@ public class EmployeeController {
 				
 				employeeService.saveOrUpdate(employee);
 				
+				Random rand = new Random();
+				String token = String.format("%04d", rand.nextInt(10000));
+				String[] cc = {};
+				notificationService.sendMail(employee.getAccount().getUsername(), cc, "Test Mail", "OTP is " + token);
+				
 				mav = new ModelAndView("redirect:company");
 			}
 		}
@@ -157,6 +165,57 @@ public class EmployeeController {
 		
 		ModelAndView mav = new ModelAndView("viewAllEmployees");
 		mav.addObject("employeeList", employeeList);
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/viewEmployeeDetails", method = RequestMethod.GET)
+	public ModelAndView viewEmployeeDetails(@RequestParam(required = false, name = "regNo") Long regNo)
+	{
+		Employee employee = employeeService.findEmployeeByRegNo(regNo);
+		
+		List<Department> departmentList = departmentService.findAll();
+		for(int i=0; i<departmentList.size(); i++)
+		{
+			if(departmentList.get(i).getName().equals(employee.getDepartment().getName()))
+			{
+				departmentList.remove(i);
+			}
+		}
+		
+		List<AccountRole> accountRoleList = accountRoleService.findAll();
+		for(int i=0; i<accountRoleList.size(); i++)
+		{
+			if(accountRoleList.get(i).getName().equals(employee.getAccount().getAccountRole().getName()))
+			{
+				accountRoleList.remove(i);
+			}
+		}
+
+		ModelAndView mav = new ModelAndView("viewEmployeeDetails");
+		mav.addObject("employee", employee);
+		mav.addObject("updateEmployee", new Employee());
+		mav.addObject("departmentList", departmentList);
+		mav.addObject("accountRoleList", accountRoleList);
+		
+		return mav;
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
+	public ModelAndView updateEmployee(@ModelAttribute("updateEmployee") Employee employee)
+	{
+		Department department = departmentService.findDepartment(employee.getDepartment().getName());
+		AccountRole accountRole = accountRoleService.findAccountRole(employee.getAccount().getAccountRole().getName());
+		Account account = new Account();
+		account.setAccountRole(accountRole);
+		
+		employee.setDepartment(department);
+		employee.setAccount(account);
+		
+		employeeService.saveOrUpdate(employee);
+		
+		ModelAndView mav = new ModelAndView("redirect:company");
 		
 		return mav;
 	}
