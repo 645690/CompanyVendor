@@ -23,5 +23,8 @@ public interface CompanyService extends BaseService {
 
 	void rejectByRegNo(Long regNo) throws CompanyMgmtException;
 
+	void updateVendorList(Company company, Vendor vendor) throws CompanyMgmtException;
+
+
 	
 }

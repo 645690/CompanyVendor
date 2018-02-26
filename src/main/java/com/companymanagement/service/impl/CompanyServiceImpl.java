@@ -1,6 +1,10 @@
 package com.companymanagement.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.persistence.EntityManager;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +26,7 @@ import com.companymanagement.model.Vendor;
 import com.companymanagement.service.AccountRoleService;
 import com.companymanagement.service.AccountService;
 import com.companymanagement.service.CompanyService;
+import com.companymanagement.util.ConfUtil;
 
 @Service("CompanyService")
 public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implements CompanyService {
@@ -52,6 +58,16 @@ public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implement
 	@Transactional
 	public void saveOrUpdate(Company company) throws CompanyMgmtException {
 		company.setStatus("Pending");
+		// try catch for Upload Document (5)
+		try {
+			String url = getDocumentURL(company);
+			if (url != null) {
+				company.setDocFileUrl(url);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw new CompanyMgmtException("Can not save vendor documents", e);
+		}
 		Company findCompany = findCompanyByAccount(company.getAccount());
 		if (findCompany != null) {
 			findCompany.setName(company.getName());
@@ -61,6 +77,24 @@ public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implement
 		} else {
 			dao.persist(company);
 		}
+	}
+
+	// For uploading of file (6)
+	private String getDocumentURL(Company company) throws IOException {
+		String locToSave = ConfUtil.get("fileServerLocation");
+		System.out.println(locToSave);
+		if (company.getDocByteArray() != null && company.getDocFileExtention() != null) {
+			String path = locToSave + File.separator + company.getName() + "." + company.getDocFileExtention();
+			File file = new File(path);
+			FileUtils.writeByteArrayToFile(file, company.getDocByteArray());
+			System.out.println(ConfUtil.get("fileServerWebURL"));
+
+			String webUrl = ConfUtil.get("fileServerWebURL") + company.getName() + "." + company.getDocFileExtention();
+			return webUrl;
+		}
+
+		return null;
+		// FileUtils.w
 	}
 
 	@Override
@@ -132,5 +166,34 @@ public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implement
 		if (findCompany != null) {
 			dao.remove(findCompany);
 		}
+	}
+	
+	@Override
+	public void updateVendorList(Company company, Vendor vendor) throws CompanyMgmtException {
+		List<Vendor> vList;
+		System.out.println("reached");
+		System.out.println(company.getRegNo());
+		System.out.println(vendor.getRegNo());
+		Company existingCompany = findCompanyByRegNo(company.getRegNo());
+		if (existingCompany != null) {
+			if (existingCompany.getVenList() == null) {
+				vList = new ArrayList<Vendor>();
+				System.out.println("null");
+			} else {
+				vList = company.getVenList();
+				System.out.println("not full");
+				System.out.println(vList);
+			}
+			System.out.println(vList);
+			vList.add(vendor);
+			System.out.println(vList);
+		    List<Vendor> vendorListNoDuplicate = new ArrayList<>(new HashSet<>(vList));
+		 
+			
+//			System.out.println(vList);
+			existingCompany.setVenList(vendorListNoDuplicate);
+			dao.merge(existingCompany);
+		}
+
 	}
 }

@@ -103,16 +103,30 @@ public class AccountController {
 
 	@RequestMapping(value = "/applyToBeCompany/submit", method = RequestMethod.POST)
 	public ModelAndView applyToBeCompanySubmit(@ModelAttribute("company") Company company,
-			@SessionAttribute("account") Account account) {
+			@SessionAttribute("account") Account account,
+			@RequestParam("file") MultipartFile file/* Used for file upload (3)*/) {
 		company.setStatus("pending");
 		company.setAccount(account);
+		
+		// Used for file upload (4)
+				try {
+					byte[] data = file.getBytes();
+					String fN = file.getName();
+					String oN = file.getOriginalFilename();
+					company.setDocByteArray(data);
+					company.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		companyService.saveOrUpdate(company);
 		ModelAndView mav = new ModelAndView("redirect:/user");
 		return mav;
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ModelAndView showLogout() {
+	public ModelAndView showLogout(HttpSession session) {
+		session.invalidate();
 		ModelAndView mav = new ModelAndView("login");
 		mav.addObject("login", new Account());
 		return mav;
@@ -157,7 +171,7 @@ public class AccountController {
 			@ModelAttribute("login") Account login) throws Exception {
 		ModelAndView mav = null;
 		Account acc = accountService.findAccountByUsername(login.getUsername());
-		// User user = userService.validateUser(login);
+
 		if (login.getUsername().equalsIgnoreCase(acc.getUsername())
 				&& login.getPassword().equalsIgnoreCase(acc.getPassword())) {
 			mav = new ModelAndView("login_otp");
@@ -165,6 +179,7 @@ public class AccountController {
 			String token = String.format("%04d", rand.nextInt(10000));
 			String[] cc = {};
 			notificationService.sendMail("songnian.tay@cognizant.com", cc, "Test Mail", "OTP is " + token);
+			System.out.println("Token is " + token);
 			session.setAttribute("token", token);
 			session.setAttribute("Account", acc);
 			mav.addObject("token", "");
@@ -200,12 +215,16 @@ public class AccountController {
 					url = "redirect:company";
 					Company company = companyService.findCompanyByAccount(findAccount);
 					model.addAttribute("company", company);
+					session.setAttribute("company", company);
 				} else if (ar.equalsIgnoreCase("vendor")) {
 					url = "redirect:vendor";
+					Vendor vendor = vendorService.findVendorByAccount(findAccount);
+					session.setAttribute("vendor", vendor);
 				} else if (ar.equalsIgnoreCase("systemadmin")) {
 					url = "redirect:systemadmin";
 				}
 				mav = new ModelAndView(url);
+				model.addAttribute("account", findAccount);
 			}
 		} else {
 			session.setAttribute("Account", "");
@@ -234,8 +253,11 @@ public class AccountController {
 				url = "redirect:company";
 				Company company = companyService.findCompanyByAccount(findAccount);
 				model.addAttribute("company", company);
+				session.setAttribute("company", company);
 			} else if (ar.equalsIgnoreCase("vendor")) {
 				url = "redirect:vendor";
+				Vendor vendor = vendorService.findVendorByAccount(findAccount);
+				session.setAttribute("vendor", vendor);
 			} else if (ar.equalsIgnoreCase("systemadmin")) {
 				url = "redirect:systemadmin";
 			}

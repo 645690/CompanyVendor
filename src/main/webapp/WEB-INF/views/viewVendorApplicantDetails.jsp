@@ -42,6 +42,39 @@
         </div>
         <div class='row'>
           <div class='col-md-2'>
+            <h4>Contact:</h4>
+          </div>
+          <div class='col-md-4'>
+            <h4>${vendor.contact}</h4>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-2'>
+            <h4>Status:</h4>
+          </div>
+          <div class='col-md-4'>
+            <h4>${vendor.status}</h4>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-2'>
+            <h4>Turnover:</h4>
+          </div>
+          <div class='col-md-4'>
+            <h4>${vendor.turnover}</h4>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-2'>
+            <h4>Name:</h4>
+          </div>
+          <div class='col-md-4'>
+            <h4><td><a href="${vendor.docFileUrl}" target="_blank">${vendor.docFileUrl}</a></td>
+</h4>
+          </div>
+        </div>
+        <div class='row'>
+          <div class='col-md-2'>
             <a href="acceptVendorApplicant?regNo=${vendor.regNo}">
               <button class='btn btn-primary'>Accept</button>
             </a>

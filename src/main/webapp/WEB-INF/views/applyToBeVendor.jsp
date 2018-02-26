@@ -44,6 +44,12 @@
             <span class="help-block"></span>
           </div>
           <div class="form-group">
+            <label for="name" class="control-label">Vendor Turnover</label>
+            <form:input id="name" path="vendor.turnover" name="name"
+              required="true" cssClass="form-control" />
+            <span class="help-block"></span>
+          </div>
+          <div class="form-group">
             <label for="name" class="control-label">Notification
               Prefered Type</label>
             <form:select path="vendor.npt" cssClass="form-control">
