@@ -8,12 +8,15 @@ import java.util.Properties;
 import org.springframework.util.ResourceUtils;
 
 public class ConfUtil {
-
+	
 	static Properties props = new Properties();
-
+	
 	static {
 		try {
+			
 			FileInputStream fis = new FileInputStream(ResourceUtils.getFile("classpath:config.properties"));
+			//used when you put config.properties into target folder
+			//FileInputStream fis = new FileInputStream("config.properties");
 			props.load(fis);
 			fis.close();
 		} catch (FileNotFoundException e) {
@@ -24,7 +27,7 @@ public class ConfUtil {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public static String get(String key) {
 		return props.getProperty(key);
 	}
