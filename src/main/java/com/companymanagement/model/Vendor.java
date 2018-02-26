@@ -1,6 +1,7 @@
 package com.companymanagement.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,13 +29,24 @@ public class Vendor extends Base {
 	private String email;
 	private String contact;
 	private String status;
+	private String turnover;
 
-	//Used for file upload
+	
+
+	//Used for file upload(1)
 	private String docFileUrl;
 	@Transient
 	private byte docByteArray[];
 	@Transient
 	private String docFileExtention;
+	
+	public String getTurnover() {
+		return turnover;
+	}
+
+	public void setTurnover(String turnover) {
+		this.turnover = turnover;
+	}
 	
 	public String getDocFileUrl() {
 		return docFileUrl;
@@ -150,11 +162,15 @@ public class Vendor extends Base {
 		result = prime * result + ((account == null) ? 0 : account.hashCode());
 		result = prime * result + ((certList == null) ? 0 : certList.hashCode());
 		result = prime * result + ((contact == null) ? 0 : contact.hashCode());
+		result = prime * result + Arrays.hashCode(docByteArray);
+		result = prime * result + ((docFileExtention == null) ? 0 : docFileExtention.hashCode());
+		result = prime * result + ((docFileUrl == null) ? 0 : docFileUrl.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((npt == null) ? 0 : npt.hashCode());
 		result = prime * result + ((regNo == null) ? 0 : regNo.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((turnover == null) ? 0 : turnover.hashCode());
 		return result;
 	}
 
@@ -182,6 +198,18 @@ public class Vendor extends Base {
 				return false;
 		} else if (!contact.equals(other.contact))
 			return false;
+		if (!Arrays.equals(docByteArray, other.docByteArray))
+			return false;
+		if (docFileExtention == null) {
+			if (other.docFileExtention != null)
+				return false;
+		} else if (!docFileExtention.equals(other.docFileExtention))
+			return false;
+		if (docFileUrl == null) {
+			if (other.docFileUrl != null)
+				return false;
+		} else if (!docFileUrl.equals(other.docFileUrl))
+			return false;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -207,13 +235,22 @@ public class Vendor extends Base {
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
+		if (turnover == null) {
+			if (other.turnover != null)
+				return false;
+		} else if (!turnover.equals(other.turnover))
+			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "Vendor [regNo=" + regNo + ", name=" + name + ", email=" + email + ", contact=" + contact + ", status="
-				+ status + ", npt=" + npt + ", certList=" + certList + ", account=" + account + "]";
+				+ status + ", turnover=" + turnover + ", docFileUrl=" + docFileUrl + ", docByteArray="
+				+ Arrays.toString(docByteArray) + ", docFileExtention=" + docFileExtention + ", npt=" + npt
+				+ ", certList=" + certList + ", account=" + account + "]";
 	}
+
+	
 
 }
