@@ -85,6 +85,4 @@ public class Company extends Base {
 		this.account = account;
 	}
 
-	
-	
 }

@@ -8,30 +8,28 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.companymanagement.dao.ApplicationCategoryDao;
-import com.companymanagement.model.ApplicationCategory;
+import com.companymanagement.dao.ApplicationRequestStatusDAO;
+import com.companymanagement.model.ApplicationRequestStatus;
 
-@Repository("applicationCategoryDAO")
-public class ApplicationCategoryDaoImpl extends JPADAOImpl<Long, ApplicationCategory> implements ApplicationCategoryDao {
+@Repository("ApplicationRequestStatusDAO")
+public class ApplicationRequestStatusDAOImpl extends JPADAOImpl<Long, ApplicationRequestStatus> implements ApplicationRequestStatusDAO {
 
 	@Autowired
-    EntityManagerFactory entityManagerFactory;
-	
-	@PersistenceContext(unitName="CmpMgmt_PersistenceUnit")
+	EntityManagerFactory entityManagerFactory;
+
+	@PersistenceContext(unitName = "CmpMgmt_PersistenceUnit")
 	private EntityManager entityManager;
-	
+
 	public void setEntityManager(EntityManager em) {
 		this.entityManager = em;
 		super.setEntityManager(entityManager);
-		}
-    
-    @PostConstruct
-    public void init() {
-        super.setEntityManagerFactory(entityManagerFactory);
-        super.setEntityManager(entityManager);
-    }
+	}
 
-    
+	@PostConstruct
+	public void init() {
+		super.setEntityManagerFactory(entityManagerFactory);
+		super.setEntityManager(entityManager);
+	}
 
 	public EntityManagerFactory getEntityManagerFactory() {
 		return entityManagerFactory;
@@ -44,6 +42,5 @@ public class ApplicationCategoryDaoImpl extends JPADAOImpl<Long, ApplicationCate
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}
-	
-	
+
 }
