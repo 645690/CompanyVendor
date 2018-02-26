@@ -2,7 +2,10 @@ package com.companymanagement.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+>>>>>>> 540902ac1822f00e94c630cf5f8fdf04c9d64a31
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -164,5 +167,34 @@ public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implement
 		if (findCompany != null) {
 			dao.remove(findCompany);
 		}
+	}
+	
+	@Override
+	public void updateVendorList(Company company, Vendor vendor) throws CompanyMgmtException {
+		List<Vendor> vList;
+		System.out.println("reached");
+		System.out.println(company.getRegNo());
+		System.out.println(vendor.getRegNo());
+		Company existingCompany = findCompanyByRegNo(company.getRegNo());
+		if (existingCompany != null) {
+			if (existingCompany.getVenList() == null) {
+				vList = new ArrayList<Vendor>();
+				System.out.println("null");
+			} else {
+				vList = company.getVenList();
+				System.out.println("not full");
+				System.out.println(vList);
+			}
+			System.out.println(vList);
+			vList.add(vendor);
+			System.out.println(vList);
+		    List<Vendor> vendorListNoDuplicate = new ArrayList<>(new HashSet<>(vList));
+		 
+			
+//			System.out.println(vList);
+			existingCompany.setVenList(vendorListNoDuplicate);
+			dao.merge(existingCompany);
+		}
+
 	}
 }
