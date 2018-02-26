@@ -125,7 +125,8 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ModelAndView showLogout() {
+	public ModelAndView showLogout(HttpSession session) {
+		session.invalidate();
 		ModelAndView mav = new ModelAndView("login");
 		mav.addObject("login", new Account());
 		return mav;
@@ -214,8 +215,11 @@ public class AccountController {
 					url = "redirect:company";
 					Company company = companyService.findCompanyByAccount(findAccount);
 					model.addAttribute("company", company);
+					session.setAttribute("company", company);
 				} else if (ar.equalsIgnoreCase("vendor")) {
 					url = "redirect:vendor";
+					Vendor vendor = vendorService.findVendorByAccount(findAccount);
+					session.setAttribute("vendor", vendor);
 				} else if (ar.equalsIgnoreCase("systemadmin")) {
 					url = "redirect:systemadmin";
 				}
@@ -249,8 +253,11 @@ public class AccountController {
 				url = "redirect:company";
 				Company company = companyService.findCompanyByAccount(findAccount);
 				model.addAttribute("company", company);
+				session.setAttribute("company", company);
 			} else if (ar.equalsIgnoreCase("vendor")) {
 				url = "redirect:vendor";
+				Vendor vendor = vendorService.findVendorByAccount(findAccount);
+				session.setAttribute("vendor", vendor);
 			} else if (ar.equalsIgnoreCase("systemadmin")) {
 				url = "redirect:systemadmin";
 			}
