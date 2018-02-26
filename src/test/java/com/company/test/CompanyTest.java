@@ -46,8 +46,7 @@ public class CompanyTest {
 //		vendorService.saveOrUpdate(vendor3);
 //		Vendor findVendor3 = vendorService.findVendorByRegNo(vendorId3);
 //		assertEquals(vendor3, findVendor3);
-<<<<<<< HEAD
-=======
+
 		Long vendorId = 2L;
 		Vendor vendor = new Vendor(vendorId, "Vendor 2");
 		vendorService.saveOrUpdate(vendor);
@@ -65,7 +64,6 @@ public class CompanyTest {
 		vendorService.saveOrUpdate(vendor3);
 		Vendor findVendor3 = vendorService.findVendorByRegNo(vendorId3);
 		assertEquals(vendor3, findVendor3);
->>>>>>> d43006d78f4d619754b6d8550f90b7cfd4f06e94
 		
 		Long comId = 4L;
 		String name = "john1";

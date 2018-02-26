@@ -52,7 +52,7 @@ public class TestApplicationRequestService {
 	@Rollback(value=false)
 	public void testCategoryCreation(){
 		ApplicationCategory category = new ApplicationCategory();
-		category.setCategoryName("IT");
+		category.setCategoryName("HR");
 		category.setCreatedBy("ARS");
 		category.setCreatedDate(new Date());
 		categoryService.saveOrUpdate(category);

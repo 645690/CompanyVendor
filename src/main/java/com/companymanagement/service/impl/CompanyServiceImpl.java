@@ -1,10 +1,7 @@
 package com.companymanagement.service.impl;
 
-<<<<<<< HEAD
-=======
 import java.io.File;
 import java.io.IOException;
->>>>>>> d43006d78f4d619754b6d8550f90b7cfd4f06e94
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
