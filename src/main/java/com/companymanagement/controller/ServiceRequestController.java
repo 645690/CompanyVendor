@@ -41,8 +41,15 @@ public class ServiceRequestController {
 
 	@RequestMapping(value = "/createServiceRequest", method = RequestMethod.GET)
 	public ModelAndView createServiceRequest() {
-		ModelAndView mav = new ModelAndView("createServiceRequest");
-		mav.addObject("serviceRequest", new ServiceRequest());
+		ModelAndView mav = null;
+		try {
+			mav = new ModelAndView("createServiceRequest");
+			mav.addObject("serviceRequest", new ServiceRequest());
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "SRcontroller createServiceRequest");
+		}
 		return mav;
 	}
 
@@ -50,17 +57,24 @@ public class ServiceRequestController {
 	@RequestMapping(value = "/createNewServiceRequest", method = RequestMethod.POST)
 	public ModelAndView createNewServiceRequest(@ModelAttribute("serviceRequest") ServiceRequest serviceRequest,
 			@SessionAttribute("account") Account account) {
-		if (account.getAccountRole().getName().equalsIgnoreCase("employee")) {
-			Employee employee = employeeService.findEmployeeByAccount(account);
-			serviceRequest.setDepartment(employee.getDepartment());
-			serviceRequest.setCompany(employee.getCompany());
-		} else {
-			Company company = companyService.findCompanyByAccount(account);
-			serviceRequest.setCompany(company);
-			serviceRequest.setDepartment(new Department("Any"));
+		ModelAndView mav = null;
+		try {
+			if (account.getAccountRole().getName().equalsIgnoreCase("employee")) {
+				Employee employee = employeeService.findEmployeeByAccount(account);
+				serviceRequest.setDepartment(employee.getDepartment());
+				serviceRequest.setCompany(employee.getCompany());
+			} else {
+				Company company = companyService.findCompanyByAccount(account);
+				serviceRequest.setCompany(company);
+				serviceRequest.setDepartment(new Department("Any"));
+			}
+			serviceRequestService.saveOrUpdate(serviceRequest);
+			mav = new ModelAndView("redirect:company");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "SRcontroller createNewServiceRequest");
 		}
-		serviceRequestService.saveOrUpdate(serviceRequest);
-		ModelAndView mav = new ModelAndView("redirect:company");
 		return mav;
 	}
 
