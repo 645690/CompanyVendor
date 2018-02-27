@@ -11,4 +11,8 @@ public interface ServiceRequestApplicationService extends BaseService {
 
 	void deleteByRegNo(ServiceRequestApplication serviceRequestApplication) throws CompanyMgmtException;
 
+	void acceptServiceRequestApplication(Long srRegNo, Long srAppRegNo) throws CompanyMgmtException;
+
+	void rejectServiceRequestApplication(Long srRegNo, Long srAppRegNo) throws CompanyMgmtException;
+
 }

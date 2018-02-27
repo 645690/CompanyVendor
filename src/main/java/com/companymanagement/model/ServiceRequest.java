@@ -35,7 +35,7 @@ public class ServiceRequest extends Base {
 	@JoinColumn(name = "Status", referencedColumnName = "name")
 	private ServiceRequestStatus status;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.MERGE) 
 	@JoinColumn(name = "Category", referencedColumnName = "name")
 	private ServiceRequestCategory category;
 

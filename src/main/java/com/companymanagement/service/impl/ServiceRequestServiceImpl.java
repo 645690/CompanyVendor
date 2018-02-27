@@ -21,7 +21,6 @@ import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 import com.companymanagement.model.ServiceRequestCategory;
 import com.companymanagement.model.ServiceRequestStatus;
-import com.companymanagement.service.EmployeeService;
 import com.companymanagement.service.ServiceRequestCategoryService;
 import com.companymanagement.service.ServiceRequestService;
 import com.companymanagement.service.ServiceRequestStatusService;
@@ -133,6 +132,22 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		if (findServiceRequest != null) {
 			dao.remove(findServiceRequest);
 		}
+	}
+
+	@Override
+	@Transactional
+	public void acceptServiceRequest(Long srRegNo) throws CompanyMgmtException {
+		ServiceRequest serviceRequest = findServiceRequestByRegNo(srRegNo);
+		serviceRequest.setStatus(serviceRequestStatusService.findServiceRequestStatusByName("Accepted"));
+		dao.merge(serviceRequest);
+	}
+
+	@Override
+	@Transactional
+	public void rejectServiceRequest(Long srRegNo) throws CompanyMgmtException {
+		ServiceRequest serviceRequest = findServiceRequestByRegNo(srRegNo);
+		serviceRequest.setStatus(serviceRequestStatusService.findServiceRequestStatusByName("Rejected"));
+		dao.merge(serviceRequest);
 	}
 
 	@Override

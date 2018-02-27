@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.companymanagement.model.Account;
+import com.companymanagement.model.Company;
 import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
+import com.companymanagement.service.CompanyService;
 import com.companymanagement.service.EmployeeService;
 import com.companymanagement.service.ServiceRequestCategoryService;
 import com.companymanagement.service.ServiceRequestService;
@@ -32,6 +34,9 @@ public class ServiceRequestController {
 
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	CompanyService companyService;
 
 	@RequestMapping(value = "/createServiceRequest", method = RequestMethod.GET)
 	public ModelAndView createServiceRequest() {
@@ -47,6 +52,10 @@ public class ServiceRequestController {
 		if (account.getAccountRole().getName().equalsIgnoreCase("employee")) {
 			Employee employee = employeeService.findEmployeeByAccount(account);
 			serviceRequest.setDepartment(employee.getDepartment());
+			serviceRequest.setCompany(employee.getCompany());
+		} else {
+			Company company = companyService.findCompanyByAccount(account);
+			serviceRequest.setCompany(company);
 		}
 		serviceRequestService.saveOrUpdate(serviceRequest);
 		ModelAndView mav = new ModelAndView("redirect:company");

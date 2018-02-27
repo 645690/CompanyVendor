@@ -84,7 +84,6 @@ public class EmployeeController {
 		mav.addObject("employee", new Employee());
 		mav.addObject("permission", new Permission());
 		mav.addObject("departmentList", departmentList);
-
 		return mav;
 	}
 
@@ -111,7 +110,6 @@ public class EmployeeController {
 				Account empAccount = new Account();
 				compAdminAccount = accountService.findAccountByUsername(compAdminAccount.getUsername());
 				Company company = companyService.findCompanyByAccount(compAdminAccount);
-
 				// Set<Permission> permissions = new HashSet<Permission>();
 				// StringTokenizer countTokens = new StringTokenizer(permission.getName(), "
 				// ,");
@@ -122,26 +120,20 @@ public class EmployeeController {
 				// permissions.add(permission);
 				// }
 				// employee.getAccount().setPermission(permissions);
-
 				empAccount.setUsername(employee.getAccount().getUsername());
 				empAccount.setPassword(employee.getAccount().getPassword());
 				empAccount.setAccountRole(accountRole);
-
 				employee.setAccount(empAccount);
 				employee.setDepartment(department);
 				employee.setCompany(company);
-
 				employeeService.saveOrUpdate(employee);
-
 				Random rand = new Random();
 				String token = String.format("%04d", rand.nextInt(10000));
 				String[] cc = {};
 				notificationService.sendMail(employee.getAccount().getUsername(), cc, "Test Mail", "OTP is " + token);
-
 				mav = new ModelAndView("redirect:company");
 			}
 		}
-
 		if (emp != null) {
 			mav = new ModelAndView("createEmployee");
 			mav.addObject("employee", new Employee());
@@ -155,39 +147,32 @@ public class EmployeeController {
 	public ModelAndView viewAllEmployees(@SessionAttribute("account") Account compAdminAccount) {
 		compAdminAccount = accountService.findAccountByUsername(compAdminAccount.getUsername());
 		Company company = companyService.findCompanyByAccount(compAdminAccount);
-
 		List<Employee> employeeList = employeeService.findEmployeeByCompany(company);
-
 		ModelAndView mav = new ModelAndView("viewAllEmployees");
 		mav.addObject("employeeList", employeeList);
-
 		return mav;
 	}
 
 	@RequestMapping(value = "/viewEmployeeDetails", method = RequestMethod.GET)
 	public ModelAndView viewEmployeeDetails(@RequestParam(required = false, name = "regNo") Long regNo) {
 		Employee employee = employeeService.findEmployeeByRegNo(regNo);
-
 		List<Department> departmentList = departmentService.findAll();
 		for (int i = 0; i < departmentList.size(); i++) {
 			if (departmentList.get(i).getName().equals(employee.getDepartment().getName())) {
 				departmentList.remove(i);
 			}
 		}
-
 		List<AccountRole> accountRoleList = accountRoleService.findAll();
 		for (int i = 0; i < accountRoleList.size(); i++) {
 			if (accountRoleList.get(i).getName().equals(employee.getAccount().getAccountRole().getName())) {
 				accountRoleList.remove(i);
 			}
 		}
-
 		ModelAndView mav = new ModelAndView("viewEmployeeDetails");
 		mav.addObject("employee", employee);
 		mav.addObject("updateEmployee", new Employee());
 		mav.addObject("departmentList", departmentList);
 		mav.addObject("accountRoleList", accountRoleList);
-
 		return mav;
 	}
 
@@ -198,14 +183,10 @@ public class EmployeeController {
 		AccountRole accountRole = accountRoleService.findAccountRole(employee.getAccount().getAccountRole().getName());
 		Account account = new Account();
 		account.setAccountRole(accountRole);
-
 		employee.setDepartment(department);
 		employee.setAccount(account);
-
 		employeeService.saveOrUpdate(employee);
-
 		ModelAndView mav = new ModelAndView("redirect:company");
-
 		return mav;
 	}
 }

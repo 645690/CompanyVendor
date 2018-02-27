@@ -25,4 +25,8 @@ public interface ServiceRequestService extends BaseService {
 	List<ServiceRequest> findServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
 			throws CompanyMgmtException;
 
+	void acceptServiceRequest(Long srRegNo) throws CompanyMgmtException;
+
+	void rejectServiceRequest(Long srRegNo) throws CompanyMgmtException;
+
 }

@@ -10,12 +10,16 @@ import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.dao.JPADAO;
 import com.companymanagement.dao.ServiceRequestApplicationDAO;
+import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 import com.companymanagement.service.ServiceRequestApplicationService;
+import com.companymanagement.service.ServiceRequestService;
+import com.companymanagement.service.ServiceRequestStatusService;
 
 @Service("ServiceRequestApplicationService")
 public class ServiceRequestApplicationServiceImpl extends BaseServiceImpl<Long, ServiceRequestApplication>
@@ -23,6 +27,12 @@ public class ServiceRequestApplicationServiceImpl extends BaseServiceImpl<Long, 
 
 	@Autowired
 	protected ServiceRequestApplicationDAO dao;
+
+	@Autowired
+	ServiceRequestStatusService srStatusService;
+
+	@Autowired
+	ServiceRequestService serviceRequestService;
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -74,5 +84,23 @@ public class ServiceRequestApplicationServiceImpl extends BaseServiceImpl<Long, 
 		if (findServiceRequest != null) {
 			dao.remove(findServiceRequest);
 		}
+	}
+
+	@Override
+	@Transactional
+	public void acceptServiceRequestApplication(Long srRegNo, Long srAppRegNo) throws CompanyMgmtException {
+		ServiceRequestApplication srApplication = findServiceRequestApplicationByRegNo(srAppRegNo);
+		srApplication.setStatus(srStatusService.findServiceRequestStatusByName("Accepted"));
+		dao.merge(srApplication);
+		serviceRequestService.acceptServiceRequest(srRegNo);
+	}
+
+	@Override
+	@Transactional
+	public void rejectServiceRequestApplication(Long srRegNo, Long srAppRegNo) throws CompanyMgmtException {
+		ServiceRequestApplication srApplication = findServiceRequestApplicationByRegNo(srAppRegNo);
+		srApplication.setStatus(srStatusService.findServiceRequestStatusByName("Rejected"));
+		dao.merge(srApplication);
+		serviceRequestService.rejectServiceRequest(srRegNo);
 	}
 }
