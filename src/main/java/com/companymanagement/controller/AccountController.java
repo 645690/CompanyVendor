@@ -176,21 +176,23 @@ public class AccountController {
 	public ModelAndView loginProcess(HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("login") Account login) throws Exception {
 		ModelAndView mav = null;
-		Account acc = accountService.findAccountByUsername(login.getUsername());
+		try {
+			Account acc = accountService.findAccountByUsername(login.getUsername());
 
-		if (login.getUsername().equalsIgnoreCase(acc.getUsername())
-				&& login.getPassword().equalsIgnoreCase(acc.getPassword())) {
-			mav = new ModelAndView("login_otp");
-			Random rand = new Random();
-			String token = String.format("%04d", rand.nextInt(10000));
-			String[] cc = {};
-			notificationService.sendMail("songnian.tay@cognizant.com", cc, "Login OTP", "OTP is " + token);
-			System.out.println("Token is " + token);
-			session.setAttribute("token", token);
-			session.setAttribute("Account", acc);
-			mav.addObject("token", "");
+			if (login.getUsername().equalsIgnoreCase(acc.getUsername())
+					&& login.getPassword().equalsIgnoreCase(acc.getPassword())) {
+				mav = new ModelAndView("login_otp");
+				Random rand = new Random();
+				String token = String.format("%04d", rand.nextInt(10000));
+				String[] cc = {};
+				notificationService.sendMail("songnian.tay@cognizant.com", cc, "Login OTP", "OTP is " + token);
+				System.out.println("Token is " + token);
+				session.setAttribute("token", token);
+				session.setAttribute("Account", acc);
+				mav.addObject("token", "");
 
-		} else {
+			} 
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "Username or Password is wrong!!");

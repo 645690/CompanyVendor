@@ -22,14 +22,15 @@ public class DepartmentTest {
 	@Test
 	@Rollback(value = false)
 	public void createDepartment() {
-		//Department d1 = new Department("HR");
+		Department d1 = new Department("HR");
 		Department d2 = new Department("OPERATIONS");
-		//Department d3 = new Department("IT");
-		Department d3 = new Department("Any");
+		Department d3 = new Department("IT");
+		Department d4 = new Department("Any");
 		
-		//departmentService.saveOrUpdate(d1);
+		departmentService.saveOrUpdate(d1);
 		departmentService.saveOrUpdate(d2);
 		departmentService.saveOrUpdate(d3);
+		departmentService.saveOrUpdate(d4);
 	}
 
 }

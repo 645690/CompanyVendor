@@ -59,9 +59,12 @@ public class ServiceRequestApplicationController {
 	public ModelAndView createServiceRequestApplications(
 			@RequestParam(required = false, name = "serviceRequestRegNo") Long srRegNo,
 			@ModelAttribute("serviceRequestApplication") ServiceRequestApplication srApp,
-			@SessionAttribute("account") Account account) {
+			@SessionAttribute("account") Account account) throws Exception {
 		Vendor vendor = vendorService.findVendorByAccount(account);
 		srApp.setVendor(vendor);
+		String[] cc = {};
+		notificationService.sendMail("teamgammatest@gmail.com", cc, "Service Request Application sent",
+				"Service Request Application " + srRegNo);
 		serviceRequestService.addServiceRequestApplication(srRegNo, srApp);
 		ModelAndView mav = new ModelAndView("redirect:vendor");
 		return mav;

@@ -46,13 +46,11 @@ public class TestApplicationRequestService {
 	@Autowired
 	AccountService accService;
 	
-	
-	
 	@Test
 	@Rollback(value=false)
 	public void testCategoryCreation(){
 		ApplicationCategory category = new ApplicationCategory();
-		category.setCategoryName("HR");
+		category.setCategoryName("Business");
 		category.setCreatedBy("ARS");
 		category.setCreatedDate(new Date());
 		categoryService.saveOrUpdate(category);
@@ -62,7 +60,7 @@ public class TestApplicationRequestService {
 	@Rollback(value=false)
 	public void testStatusCreation(){
 		ApplicationStatus status = new ApplicationStatus();
-		status.setStatusName("rejected");
+		status.setStatusName("approved");
 		status.setCreatedBy("ARS");
 		status.setCreatedDate(new Date());
 		statusService.saveOrUpdate(status);
