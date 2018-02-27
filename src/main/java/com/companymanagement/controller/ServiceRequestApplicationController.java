@@ -15,6 +15,7 @@ import com.companymanagement.model.Account;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 import com.companymanagement.model.Vendor;
+import com.companymanagement.notification.NotificationService;
 import com.companymanagement.service.ServiceRequestApplicationService;
 import com.companymanagement.service.ServiceRequestService;
 import com.companymanagement.service.VendorService;
@@ -30,6 +31,9 @@ public class ServiceRequestApplicationController {
 
 	@Autowired
 	VendorService vendorService;
+
+	@Autowired
+	NotificationService notificationService;
 
 	@RequestMapping(value = "/viewServiceRequestApplications", method = RequestMethod.GET)
 	public ModelAndView showServiceRequestApplications(
@@ -66,8 +70,11 @@ public class ServiceRequestApplicationController {
 	@RequestMapping(value = "/acceptServiceRequestApplication", method = RequestMethod.GET)
 	public ModelAndView acceptServiceRequestApplication(
 			@RequestParam(required = false, name = "srAppRegNo") Long srAppRegNo,
-			@RequestParam(required = false, name = "srRegNo") Long srRegNo) {
+			@RequestParam(required = false, name = "srRegNo") Long srRegNo) throws Exception {
 		serviceRequestApplicationService.acceptServiceRequestApplication(srRegNo, srAppRegNo);
+		String[] cc = {};
+		notificationService.sendMail("teamgammatest@gmail.com", cc, "Accepted Service Request Application",
+				"Service Request Application " + srAppRegNo + " accepted for Service Request: " + srRegNo);
 		ModelAndView mav = new ModelAndView("redirect:company");
 		return mav;
 	}
@@ -75,8 +82,11 @@ public class ServiceRequestApplicationController {
 	@RequestMapping(value = "/rejectServiceRequestApplication", method = RequestMethod.GET)
 	public ModelAndView rejectServiceRequestApplication(
 			@RequestParam(required = false, name = "srAppRegNo") Long srAppRegNo,
-			@RequestParam(required = false, name = "srRegNo") Long srRegNo) {
+			@RequestParam(required = false, name = "srRegNo") Long srRegNo) throws Exception {
 		serviceRequestApplicationService.rejectServiceRequestApplication(srRegNo, srAppRegNo);
+		String[] cc = {};
+		notificationService.sendMail("teamgammatest@gmail.com", cc, "Rejected Service Request Application",
+				"Service Request Application " + srAppRegNo + " rejected for Service Request: " + srRegNo);
 		ModelAndView mav = new ModelAndView("redirect:company");
 		return mav;
 	}

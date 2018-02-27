@@ -23,6 +23,7 @@ import com.companymanagement.model.ApplicationStatus;
 import com.companymanagement.model.Company;
 import com.companymanagement.model.Misc;
 import com.companymanagement.model.Vendor;
+import com.companymanagement.notification.NotificationService;
 import com.companymanagement.service.ApplicationCategoryService;
 import com.companymanagement.service.ApplicationRequestService;
 import com.companymanagement.service.ApplicationStatusService;
@@ -42,6 +43,9 @@ public class ApplicationRequestController {
 
 	@Autowired
 	CompanyService companyService;
+
+	@Autowired
+	NotificationService notificationService;
 
 	@RequestMapping(value = "/r_application", method = RequestMethod.GET)
 	public ModelAndView requestApplication(HttpSession session, HttpServletRequest request,
@@ -82,7 +86,7 @@ public class ApplicationRequestController {
 
 	@RequestMapping(value = "/r_application", method = RequestMethod.POST)
 	public ModelAndView requestCreation(HttpSession session, HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("request") Misc requestApp, RedirectAttributes redir) {
+			@ModelAttribute("request") Misc requestApp, RedirectAttributes redir) throws Exception {
 		ModelAndView mav = null;
 		HashMap<String, ApplicationCategory> categoryHashMap = (HashMap<String, ApplicationCategory>) session
 				.getAttribute("categoryHashMap");
@@ -93,7 +97,7 @@ public class ApplicationRequestController {
 		ApplicationCategory category = categoryHashMap.get(requestApp.getType());
 		Company company = companyHashMap.get(requestApp.getName());
 		Vendor vendor = (Vendor) session.getAttribute("vendor");
-		Account acc = (Account)session.getAttribute("account");
+		Account acc = (Account) session.getAttribute("account");
 		String applicationNo = String.valueOf(acc.getId()) + String.valueOf(company.getId())
 				+ String.valueOf(category.getId());
 
@@ -105,6 +109,9 @@ public class ApplicationRequestController {
 			newRequestApp.setAppStatus(appStatus);
 			System.out.println(newRequestApp);
 			requestService.saveOrUpdate(newRequestApp);
+			String[] cc = {};
+			notificationService.sendMail("teamgammatest@gmail.com", cc, "Application Request Sent",
+					"Application: " + applicationNo + " has been created.");
 			redir.addFlashAttribute("message", "Application created successfully");
 			return new ModelAndView("redirect:vendor");
 		} else {
@@ -117,24 +124,27 @@ public class ApplicationRequestController {
 	@RequestMapping(value = "/request_application", method = RequestMethod.GET)
 	public ModelAndView companyRequestApplication(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response, @RequestParam(required = false, name = "applicationNo") String applicationNo,
-			@RequestParam(required = false, name = "status") String status, RedirectAttributes redir) {
-				ModelAndView mav = null;
-				if (applicationNo != null && status != null) {
-					ApplicationRequest existingRequest = requestService.findbyUniqueRequest(applicationNo);
-					ApplicationStatus existingStatus = statusService.findbyUniqueStatus(status);
-					requestService.updateStatus(existingRequest, existingStatus);
-					redir.addFlashAttribute("error", "The request is updated successfully.");
-					return new ModelAndView("redirect:company");
-				} else {
-					List<ApplicationRequest> requestList;
-					mav = new ModelAndView("company_request_application");
-					Company userCompany = (Company) session.getAttribute("company");
-					System.out.println(userCompany.getVenList());
-					ApplicationStatus appStatus = statusService.findbyUniqueStatus("pending");
-					requestList = requestService.findRequestByCompanyAndStatus(userCompany, appStatus);
-					mav.addObject("requestList", requestList);
-				}
-				return mav;
+			@RequestParam(required = false, name = "status") String status, RedirectAttributes redir) throws Exception {
+		ModelAndView mav = null;
+		if (applicationNo != null && status != null) {
+			ApplicationRequest existingRequest = requestService.findbyUniqueRequest(applicationNo);
+			ApplicationStatus existingStatus = statusService.findbyUniqueStatus(status);
+			requestService.updateStatus(existingRequest, existingStatus);
+			String[] cc = {};
+			notificationService.sendMail("teamgammatest@gmail.com", cc, "Application Request Status Updated",
+					"Application: " + applicationNo + " has been " + status);
+			redir.addFlashAttribute("error", "The request is updated successfully.");
+			return new ModelAndView("redirect:company");
+		} else {
+			List<ApplicationRequest> requestList;
+			mav = new ModelAndView("company_request_application");
+			Company userCompany = (Company) session.getAttribute("company");
+			System.out.println(userCompany.getVenList());
+			ApplicationStatus appStatus = statusService.findbyUniqueStatus("pending");
+			requestList = requestService.findRequestByCompanyAndStatus(userCompany, appStatus);
+			mav.addObject("requestList", requestList);
+		}
+		return mav;
 
 	}
 

@@ -75,7 +75,7 @@ public class AccountController {
 	@RequestMapping(value = "/applyToBeVendor/submit", method = RequestMethod.POST)
 	public ModelAndView applyToBeVendorSubmit(@ModelAttribute("vendor") Vendor vendor,
 			@SessionAttribute("account") Account account,
-			@RequestParam("file") MultipartFile file/* Used for file upload */) {
+			@RequestParam("file") MultipartFile file/* Used for file upload */) throws Exception {
 		vendor.setStatus("pending");
 		vendor.setAccount(account);
 		// Used for file upload
@@ -90,6 +90,9 @@ public class AccountController {
 			e.printStackTrace();
 		}
 		vendorService.saveOrUpdate(vendor);
+		String[] cc = {};
+		notificationService.sendMail("teamgammatest@gmail.com", cc, "Vendor Application",
+				"Vendor application " + vendor.getName() + " has been created");
 		ModelAndView mav = new ModelAndView("redirect:/user");
 		return mav;
 	}
@@ -104,22 +107,25 @@ public class AccountController {
 	@RequestMapping(value = "/applyToBeCompany/submit", method = RequestMethod.POST)
 	public ModelAndView applyToBeCompanySubmit(@ModelAttribute("company") Company company,
 			@SessionAttribute("account") Account account,
-			@RequestParam("file") MultipartFile file/* Used for file upload (3)*/) {
+			@RequestParam("file") MultipartFile file/* Used for file upload (3) */) throws Exception {
 		company.setStatus("pending");
 		company.setAccount(account);
-		
+
 		// Used for file upload (4)
-				try {
-					byte[] data = file.getBytes();
-					String fN = file.getName();
-					String oN = file.getOriginalFilename();
-					company.setDocByteArray(data);
-					company.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		try {
+			byte[] data = file.getBytes();
+			String fN = file.getName();
+			String oN = file.getOriginalFilename();
+			company.setDocByteArray(data);
+			company.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		companyService.saveOrUpdate(company);
+		String[] cc = {};
+		notificationService.sendMail("teamgammatest@gmail.com", cc, "Company Application",
+				"Company application " + company.getName() + " has been created");
 		ModelAndView mav = new ModelAndView("redirect:/user");
 		return mav;
 	}
