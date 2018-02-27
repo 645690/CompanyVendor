@@ -14,7 +14,8 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ServiceRequest.findRegNo", query = "SELECT sr FROM ServiceRequest sr WHERE sr.regNo=:regNo"),
-		@NamedQuery(name = "ServiceRequest.findByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company") })
+		@NamedQuery(name = "ServiceRequest.findByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company"),
+		@NamedQuery(name = "ServiceRequest.findByDepartmentAndCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company AND sr.department=:department") })
 public class ServiceRequest extends Base {
 
 	private static final long serialVersionUID = -4697330149497262611L;
@@ -34,7 +35,7 @@ public class ServiceRequest extends Base {
 	@JoinColumn(name = "Status", referencedColumnName = "name")
 	private ServiceRequestStatus status;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne(cascade = CascadeType.MERGE) 
 	@JoinColumn(name = "Category", referencedColumnName = "name")
 	private ServiceRequestCategory category;
 

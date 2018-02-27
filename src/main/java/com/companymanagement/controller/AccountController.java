@@ -178,7 +178,7 @@ public class AccountController {
 			Random rand = new Random();
 			String token = String.format("%04d", rand.nextInt(10000));
 			String[] cc = {};
-			notificationService.sendMail("songnian.tay@cognizant.com", cc, "Test Mail", "OTP is " + token);
+			notificationService.sendMail("songnian.tay@cognizant.com", cc, "Login OTP", "OTP is " + token);
 			System.out.println("Token is " + token);
 			session.setAttribute("token", token);
 			session.setAttribute("Account", acc);

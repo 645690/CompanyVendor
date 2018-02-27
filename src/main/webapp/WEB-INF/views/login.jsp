@@ -23,7 +23,7 @@
           <div class="row">
             <div class="col">
               <div class="well">
-                <form id="loginForm" method="post" action="loginProcess"
+                <form id="loginForm" method="post" action="otp"
                   modelAttribute="login">
                   <div class="form-group">
                     <label for="username" class="control-label">Username</label>

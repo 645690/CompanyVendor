@@ -20,7 +20,7 @@ import com.companymanagement.service.ServiceRequestStatusService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:ApplicationContext.xml" })
-@Transactional
+@Transactional(noRollbackFor = Exception.class)
 public class ServiceRequestTest {
 
 	@Autowired
@@ -45,6 +45,8 @@ public class ServiceRequestTest {
 		srss.saveOrUpdate(srStatus);
 		ServiceRequestStatus srStatus2 = new ServiceRequestStatus("Accepted");
 		srss.saveOrUpdate(srStatus2);
+		ServiceRequestStatus srStatus3 = new ServiceRequestStatus("Rejected");
+		srss.saveOrUpdate(srStatus3);
 
 		ServiceRequestCategory srCat = new ServiceRequestCategory("IT");
 		srcs.saveOrUpdate(srCat);

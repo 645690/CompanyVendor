@@ -20,8 +20,8 @@
             <th>Reg No</th>
             <th>Name</th>
             <th>Category</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>Vendor</th>
+            <th colspan=2>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -31,9 +31,16 @@
               <td>${serviceRequestApplication.regNo}</td>
               <td>${serviceRequestApplication.name}</td>
               <td>${serviceRequestApplication.category.name}</td>
+              <td>${serviceRequestApplication.vendor.name}</td>
               <td>${serviceRequestApplication.status.name}</td>
-              <td style="width: 10%"><a href="#"><button
-                    class='btn btn-primary'>View applications</button></a></td>
+              <td style="width: 10%"><a
+                href="acceptServiceRequestApplication?srAppRegNo=${serviceRequestApplication.regNo}&srRegNo=${serviceRequest.regNo}">
+                  <button class='btn btn-primary'>Accept</button>
+              </a></td>
+              <td style="width: 10%"><a
+                href="rejectServiceRequestApplication?srAppRegNo=${serviceRequestApplication.regNo}&srRegNo=${serviceRequest.regNo}">
+                  <button class='btn btn-primary'>Reject</button>
+              </a></td>
             </tr>
           </c:forEach>
         </tbody>
