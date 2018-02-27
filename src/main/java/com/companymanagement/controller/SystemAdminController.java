@@ -16,6 +16,7 @@ import com.companymanagement.model.Company;
 import com.companymanagement.model.Department;
 import com.companymanagement.model.NotificationPreferedType;
 import com.companymanagement.model.Vendor;
+import com.companymanagement.notification.NotificationService;
 import com.companymanagement.service.AccountRoleService;
 import com.companymanagement.service.CompanyService;
 import com.companymanagement.service.DepartmentService;
@@ -41,7 +42,10 @@ public class SystemAdminController {
 	@Autowired
 	NotificationPreferedTypeService nptService;
 
-	@RequestMapping(value = "/systemadmin",method = RequestMethod.GET)
+	@Autowired
+	NotificationService notificationService;
+
+	@RequestMapping(value = "/systemadmin", method = RequestMethod.GET)
 	public ModelAndView showAllCompany() {
 		ModelAndView mav = new ModelAndView("systemadmin");
 		List<Company> cList = companyService.findAll();
@@ -58,15 +62,23 @@ public class SystemAdminController {
 	}
 
 	@RequestMapping(value = "/acceptCompanyApplicant", method = RequestMethod.GET)
-	public ModelAndView acceptCompanyApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
+	public ModelAndView acceptCompanyApplicant(@RequestParam(required = false, name = "regNo") Long regNo)
+			throws Exception {
 		companyService.acceptByRegNo(regNo);
+		String[] cc = {};
+		notificationService.sendMail("tk125@hotmail.com", cc, "Company Application",
+				"Company application " + regNo + " has been accepted");
 		ModelAndView mav = new ModelAndView("redirect:/systemadmin");
 		return mav;
 	}
 
 	@RequestMapping(value = "/rejectCompanyApplicant", method = RequestMethod.GET)
-	public ModelAndView rejectCompanyApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
+	public ModelAndView rejectCompanyApplicant(@RequestParam(required = false, name = "regNo") Long regNo)
+			throws Exception {
 		companyService.rejectByRegNo(regNo);
+		String[] cc = {};
+		notificationService.sendMail("tk125@hotmail.com", cc, "Company Application",
+				"Company application " + regNo + " has been rejected");
 		ModelAndView mav = new ModelAndView("redirect:/systemadmin");
 		return mav;
 	}
@@ -96,15 +108,23 @@ public class SystemAdminController {
 	}
 
 	@RequestMapping(value = "/acceptVendorApplicant", method = RequestMethod.GET)
-	public ModelAndView acceptVendorApplicant(@RequestParam(required = false, name = "regNo") Long regNo) {
+	public ModelAndView acceptVendorApplicant(@RequestParam(required = false, name = "regNo") Long regNo)
+			throws Exception {
 		vendorService.acceptByRegNo(regNo);
+		String[] cc = {};
+		notificationService.sendMail("teamgammatest@gmail.com", cc, "Vendor Application",
+				"Vendor application " + regNo + " has been accepted");
 		ModelAndView mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
 		return mav;
 	}
 
 	@RequestMapping(value = "/rejectVendorApplicant", method = RequestMethod.GET)
-	public ModelAndView rejectVendorApplicant(@RequestParam(required = false, name = "regNo") Long vaRegNo) {
+	public ModelAndView rejectVendorApplicant(@RequestParam(required = false, name = "regNo") Long vaRegNo)
+			throws Exception {
 		vendorService.rejectByRegNo(vaRegNo);
+		String[] cc = {};
+		notificationService.sendMail("tk125@hotmail.com", cc, "Vendor Application",
+				"Vendor application " + vaRegNo + " has been rejected");
 		ModelAndView mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
 		return mav;
 	}

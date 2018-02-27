@@ -16,11 +16,13 @@ import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.dao.JPADAO;
 import com.companymanagement.dao.ServiceRequestDAO;
 import com.companymanagement.model.Company;
+import com.companymanagement.model.Department;
 import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 import com.companymanagement.model.ServiceRequestCategory;
 import com.companymanagement.model.ServiceRequestStatus;
+import com.companymanagement.service.DepartmentService;
 import com.companymanagement.service.ServiceRequestCategoryService;
 import com.companymanagement.service.ServiceRequestService;
 import com.companymanagement.service.ServiceRequestStatusService;
@@ -36,6 +38,9 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 
 	@Autowired
 	protected ServiceRequestStatusService serviceRequestStatusService;
+
+	@Autowired
+	protected DepartmentService departmentService;
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -73,11 +78,14 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		serviceRequest.setCategory(src);
 		ServiceRequestStatus srs = serviceRequestStatusService.findServiceRequestStatusByName("Pending");
 		serviceRequest.setStatus(srs);
+		Department department = departmentService.findDepartment(serviceRequest.getDepartment().getName());
+		serviceRequest.setDepartment(department);
 		ServiceRequest findServiceRequest = findServiceRequestByRegNo(serviceRequest.getRegNo());
 		if (findServiceRequest != null) {
 			findServiceRequest.setName(serviceRequest.getName());
 			findServiceRequest.setStatus(serviceRequest.getStatus());
 			findServiceRequest.setCategory(serviceRequest.getCategory());
+			findServiceRequest.setDepartment(serviceRequest.getDepartment());
 			findServiceRequest.setSrAppList(serviceRequest.getSrAppList());
 			dao.merge(findServiceRequest);
 		} else {
@@ -157,6 +165,7 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		Map<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("company", employee.getCompany());
 		queryParams.put("department", employee.getDepartment());
+		queryParams.put("anyDepartment", departmentService.findDepartment("Any"));
 
 		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams(
 				"ServiceRequest.findByDepartmentAndCompany", queryParams);

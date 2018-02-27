@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.companymanagement.model.Account;
 import com.companymanagement.model.Company;
+import com.companymanagement.model.Department;
 import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.service.CompanyService;
@@ -34,7 +35,7 @@ public class ServiceRequestController {
 
 	@Autowired
 	EmployeeService employeeService;
-	
+
 	@Autowired
 	CompanyService companyService;
 
@@ -56,6 +57,7 @@ public class ServiceRequestController {
 		} else {
 			Company company = companyService.findCompanyByAccount(account);
 			serviceRequest.setCompany(company);
+			serviceRequest.setDepartment(new Department("Any"));
 		}
 		serviceRequestService.saveOrUpdate(serviceRequest);
 		ModelAndView mav = new ModelAndView("redirect:company");

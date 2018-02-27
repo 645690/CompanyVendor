@@ -103,8 +103,7 @@ public class EmployeeController {
 				mav.addObject("permission", new Permission());
 				mav.addObject("departmentList", departmentList);
 				mav.addObject("message", "Account Username already exists!!");
-			}
-			else if (account == null) {
+			} else if (account == null) {
 				Department department = departmentService.findDepartment(employee.getDepartment().getName());
 				AccountRole accountRole = accountRoleService.findAccountRole("employee");
 				Account empAccount = new Account();
@@ -127,10 +126,9 @@ public class EmployeeController {
 				employee.setDepartment(department);
 				employee.setCompany(company);
 				employeeService.saveOrUpdate(employee);
-				Random rand = new Random();
-				String token = String.format("%04d", rand.nextInt(10000));
 				String[] cc = {};
-				notificationService.sendMail(employee.getAccount().getUsername(), cc, "Test Mail", "OTP is " + token);
+				notificationService.sendMail("teamgammatest@gmail.com", cc, "Employee Account Created",
+						"Your username is: " + empAccount.getUsername());
 				mav = new ModelAndView("redirect:company");
 			}
 		}
