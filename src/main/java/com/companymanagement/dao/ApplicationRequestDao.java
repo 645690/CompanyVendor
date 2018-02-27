@@ -8,7 +8,6 @@ import com.companymanagement.model.Company;
 
 public interface ApplicationRequestDao extends JPADAO<ApplicationRequest, Long>{
 
-
 	List<ApplicationRequest> findRequestbyCompanyAndStatus(Company company, ApplicationStatus status);
 
 }
