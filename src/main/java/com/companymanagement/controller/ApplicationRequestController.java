@@ -50,6 +50,8 @@ public class ApplicationRequestController {
 	@RequestMapping(value = "/r_application", method = RequestMethod.GET)
 	public ModelAndView requestApplication(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response) {
+		ModelAndView mav = null;
+		try {
 		List<Company> companyList;
 		List<ApplicationCategory> categoryList;
 		if (session.getAttribute("compList") == null) {
@@ -77,10 +79,15 @@ public class ApplicationRequestController {
 		}
 		System.out.println(companyList);
 		System.out.println(categoryList);
-		ModelAndView mav = new ModelAndView("request_application");
+		mav = new ModelAndView("request_application");
 		mav.addObject("compList", companyList);
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("request", new Misc());
+		}catch (Exception e) {
+					String url = "error";
+					mav = new ModelAndView(url);
+					mav.addObject("message", "request application 1");
+				}
 		return mav;
 	}
 
@@ -88,6 +95,7 @@ public class ApplicationRequestController {
 	public ModelAndView requestCreation(HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("request") Misc requestApp, RedirectAttributes redir) throws Exception {
 		ModelAndView mav = null;
+		try {
 		HashMap<String, ApplicationCategory> categoryHashMap = (HashMap<String, ApplicationCategory>) session
 				.getAttribute("categoryHashMap");
 		HashMap<String, Company> companyHashMap = (HashMap<String, Company>) session.getAttribute("companyHashMap");
@@ -118,7 +126,12 @@ public class ApplicationRequestController {
 			redir.addFlashAttribute("message", "Application existed.");
 			return new ModelAndView("redirect:vendor");
 		}
-		// return mav;
+		}catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "request application 2");
+		}
+		 return mav;
 	}
 
 	@RequestMapping(value = "/request_application", method = RequestMethod.GET)
@@ -126,6 +139,7 @@ public class ApplicationRequestController {
 			HttpServletResponse response, @RequestParam(required = false, name = "applicationNo") String applicationNo,
 			@RequestParam(required = false, name = "status") String status, RedirectAttributes redir) throws Exception {
 		ModelAndView mav = null;
+		try {
 		if (applicationNo != null && status != null) {
 			ApplicationRequest existingRequest = requestService.findbyUniqueRequest(applicationNo);
 			ApplicationStatus existingStatus = statusService.findbyUniqueStatus(status);
@@ -143,6 +157,11 @@ public class ApplicationRequestController {
 			ApplicationStatus appStatus = statusService.findbyUniqueStatus("pending");
 			requestList = requestService.findRequestByCompanyAndStatus(userCompany, appStatus);
 			mav.addObject("requestList", requestList);
+		}
+		}catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "request application 3");
 		}
 		return mav;
 
