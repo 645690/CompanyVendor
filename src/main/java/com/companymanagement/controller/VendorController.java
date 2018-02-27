@@ -32,17 +32,36 @@ public class VendorController {
 
 	@RequestMapping(value = "/vendor", method = RequestMethod.GET)
 	public ModelAndView showCompany(@SessionAttribute("account") Account account) {
-		ModelAndView mav = new ModelAndView("vendor");
-		List<ServiceRequest> srList = serviceRequestService.findAll();
-		mav.addObject("serviceRequestList", srList);
+		ModelAndView mav = null;
+		try {
+			mav = new ModelAndView("vendor");
+			List<ServiceRequest> srList = serviceRequestService.findAll();
+			mav.addObject("serviceRequestList", srList);
+
+		} catch (
+
+		Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "Error getting vendor!!");
+		}
 		return mav;
 	}
 
 	@RequestMapping(value = "/vendorprofile", method = RequestMethod.GET)
 	public ModelAndView showProfile(@SessionAttribute("account") Account account) {
-		ModelAndView mav = new ModelAndView("vendorprofile");
-		Vendor vendor = vendorService.findVendorByAccount(account);
-		mav.addObject("vendor", vendor);
+		ModelAndView mav = null;
+		try {
+			mav = new ModelAndView("vendorprofile");
+			Vendor vendor = vendorService.findVendorByAccount(account);
+			mav.addObject("vendor", vendor);
+		} catch (
+
+		Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "Error getting vendor!!");
+		}
 		return mav;
 	}
 
