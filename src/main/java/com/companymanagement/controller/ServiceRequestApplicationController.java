@@ -38,20 +38,35 @@ public class ServiceRequestApplicationController {
 	@RequestMapping(value = "/viewServiceRequestApplications", method = RequestMethod.GET)
 	public ModelAndView showServiceRequestApplications(
 			@RequestParam(required = false, name = "serviceRequestRegNo") Long srRegNo) {
-		ModelAndView mav = new ModelAndView("viewServiceRequestApplications");
-		List<ServiceRequestApplication> sraList = serviceRequestService.findServiceRequestApplicationsByRegNo(srRegNo);
-		mav.addObject("serviceRequestAppList", sraList);
-		ServiceRequest serviceRequest = serviceRequestService.findServiceRequestByRegNo(srRegNo);
-		mav.addObject("serviceRequest", serviceRequest);
+		ModelAndView mav = null;
+		try {
+			mav = new ModelAndView("viewServiceRequestApplications");
+			List<ServiceRequestApplication> sraList = serviceRequestService
+					.findServiceRequestApplicationsByRegNo(srRegNo);
+			mav.addObject("serviceRequestAppList", sraList);
+			ServiceRequest serviceRequest = serviceRequestService.findServiceRequestByRegNo(srRegNo);
+			mav.addObject("serviceRequest", serviceRequest);
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "SRAppcontroller viewServiceRequestApplications");
+		}
 		return mav;
 	}
 
 	@RequestMapping(value = "/submitServiceRequestApplication", method = RequestMethod.GET)
 	public ModelAndView submitServiceRequestApplications(
 			@RequestParam(required = false, name = "serviceRequestRegNo") Long srRegNo) {
-		ModelAndView mav = new ModelAndView("submitServiceRequestApplication");
-		mav.addObject("serviceRequestApplication", new ServiceRequestApplication());
-		mav.addObject("serviceRequestRegNo", srRegNo);
+		ModelAndView mav = null;
+		try {
+			mav = new ModelAndView("submitServiceRequestApplication");
+			mav.addObject("serviceRequestApplication", new ServiceRequestApplication());
+			mav.addObject("serviceRequestRegNo", srRegNo);
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "SRAppcontroller submitServiceRequestApplication");
+		}
 		return mav;
 	}
 
@@ -60,13 +75,20 @@ public class ServiceRequestApplicationController {
 			@RequestParam(required = false, name = "serviceRequestRegNo") Long srRegNo,
 			@ModelAttribute("serviceRequestApplication") ServiceRequestApplication srApp,
 			@SessionAttribute("account") Account account) throws Exception {
-		Vendor vendor = vendorService.findVendorByAccount(account);
-		srApp.setVendor(vendor);
-		String[] cc = {};
-		notificationService.sendMail("teamgammatest@gmail.com", cc, "Service Request Application sent",
-				"Service Request Application " + srRegNo);
-		serviceRequestService.addServiceRequestApplication(srRegNo, srApp);
-		ModelAndView mav = new ModelAndView("redirect:vendor");
+		ModelAndView mav = null;
+		try {
+			Vendor vendor = vendorService.findVendorByAccount(account);
+			srApp.setVendor(vendor);
+			String[] cc = {};
+			notificationService.sendMail("teamgammatest@gmail.com", cc, "Service Request Application sent",
+					"Service Request Application " + srRegNo);
+			serviceRequestService.addServiceRequestApplication(srRegNo, srApp);
+			mav = new ModelAndView("redirect:vendor");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "SRAppcontroller createNewServiceRequestApplication");
+		}
 		return mav;
 	}
 
@@ -74,11 +96,18 @@ public class ServiceRequestApplicationController {
 	public ModelAndView acceptServiceRequestApplication(
 			@RequestParam(required = false, name = "srAppRegNo") Long srAppRegNo,
 			@RequestParam(required = false, name = "srRegNo") Long srRegNo) throws Exception {
-		serviceRequestApplicationService.acceptServiceRequestApplication(srRegNo, srAppRegNo);
-		String[] cc = {};
-		notificationService.sendMail("teamgammatest@gmail.com", cc, "Accepted Service Request Application",
-				"Service Request Application " + srAppRegNo + " accepted for Service Request: " + srRegNo);
-		ModelAndView mav = new ModelAndView("redirect:company");
+		ModelAndView mav = null;
+		try {
+			serviceRequestApplicationService.acceptServiceRequestApplication(srRegNo, srAppRegNo);
+			String[] cc = {};
+			notificationService.sendMail("teamgammatest@gmail.com", cc, "Accepted Service Request Application",
+					"Service Request Application " + srAppRegNo + " accepted for Service Request: " + srRegNo);
+			mav = new ModelAndView("redirect:company");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "SRAppcontroller acceptServiceRequestApplication");
+		}
 		return mav;
 	}
 
@@ -86,11 +115,18 @@ public class ServiceRequestApplicationController {
 	public ModelAndView rejectServiceRequestApplication(
 			@RequestParam(required = false, name = "srAppRegNo") Long srAppRegNo,
 			@RequestParam(required = false, name = "srRegNo") Long srRegNo) throws Exception {
-		serviceRequestApplicationService.rejectServiceRequestApplication(srRegNo, srAppRegNo);
-		String[] cc = {};
-		notificationService.sendMail("teamgammatest@gmail.com", cc, "Rejected Service Request Application",
-				"Service Request Application " + srAppRegNo + " rejected for Service Request: " + srRegNo);
-		ModelAndView mav = new ModelAndView("redirect:company");
+		ModelAndView mav = null;
+		try {
+			serviceRequestApplicationService.rejectServiceRequestApplication(srRegNo, srAppRegNo);
+			String[] cc = {};
+			notificationService.sendMail("teamgammatest@gmail.com", cc, "Rejected Service Request Application",
+					"Service Request Application " + srAppRegNo + " rejected for Service Request: " + srRegNo);
+			mav = new ModelAndView("redirect:company");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "SRAppcontroller rejectServiceRequestApplication");
+		}
 		return mav;
 	}
 
