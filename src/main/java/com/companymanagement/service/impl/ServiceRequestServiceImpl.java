@@ -191,7 +191,7 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		queryParams.put("company", company);
 		queryParams.put("status", serviceRequestStatusService.findServiceRequestStatusByName("pending"));
 
-		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findByCompany",
+		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findByCompanyAndStatus",
 				queryParams);
 		if (serviceRequests.size() == 0) {
 			return null;

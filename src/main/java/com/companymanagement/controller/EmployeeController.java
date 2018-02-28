@@ -69,6 +69,7 @@ public class EmployeeController {
 			mav = new ModelAndView("company");
 			mav.addObject("serviceRequestList", srList);
 		} catch (Exception e) {
+			e.printStackTrace();
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "showCompany");
