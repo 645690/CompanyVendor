@@ -218,14 +218,15 @@ public class EmployeeController {
 
 	@Transactional
 	@RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
-	public ModelAndView updateEmployee(@ModelAttribute("updateEmployee") Employee employee) {
+	public ModelAndView updateEmployee(@ModelAttribute("updateEmployee") Employee updateEmployee) {
 		ModelAndView mav = null;
 
 		try {
-			Department department = departmentService.findDepartment(employee.getDepartment().getName());
+			Department department = departmentService.findDepartment(updateEmployee.getDepartment().getName());
 			AccountRole accountRole = accountRoleService
-					.findAccountRole(employee.getAccount().getAccountRole().getName());
-			Account account = new Account();
+					.findAccountRole(updateEmployee.getAccount().getAccountRole().getName());
+			Employee employee = employeeService.findEmployeeByRegNo(updateEmployee.getRegNo());
+			Account account = employee.getAccount();
 			account.setAccountRole(accountRole);
 			employee.setDepartment(department);
 			employee.setAccount(account);

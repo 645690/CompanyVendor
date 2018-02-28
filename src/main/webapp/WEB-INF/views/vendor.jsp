@@ -13,12 +13,12 @@
   <tags:vendorNav />
   <div class='container'>
     <div class='table-responsive'>
+      <h1>${message}</h1>
       <table class='table'>
         <thead>
           <tr>
             <th>Reg No</th>
             <th>Name</th>
-            <th>Category</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -28,7 +28,6 @@
             <tr>
               <td>${serviceRequest.regNo}</td>
               <td>${serviceRequest.name}</td>
-              <td>${serviceRequest.category.name}</td>
               <td>${serviceRequest.status.name}</td>
               <td style="width: 10%"><a
                 href="submitServiceRequestApplication?serviceRequestRegNo=${serviceRequest.regNo}"><button

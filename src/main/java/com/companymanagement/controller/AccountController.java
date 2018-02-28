@@ -68,12 +68,12 @@ public class AccountController {
 			Account account = (Account) session.getAttribute("Account");
 			Vendor vendor = vendorService.findVendorByAccount(account);
 			Company company = companyService.findCompanyByAccount(account);
-			if(company != null || vendor != null) {
+			if (company != null || vendor != null) {
 				session.setAttribute("applied", "applied");
 			}
-			mav.addObject("company",company);
-			mav.addObject("vendor",vendor);
-			
+			mav.addObject("company", company);
+			mav.addObject("vendor", vendor);
+
 		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
@@ -86,7 +86,7 @@ public class AccountController {
 	@RequestMapping(value = "/applyToBeVendor", method = RequestMethod.GET)
 	public ModelAndView applyToBeVendor(HttpSession session) {
 		ModelAndView mav = null;
-		if(session.getAttribute("applied") == "applied") {
+		if (session.getAttribute("applied") == "applied") {
 			return new ModelAndView("redirect:user");
 		}
 		try {
@@ -114,8 +114,10 @@ public class AccountController {
 				byte[] data = file.getBytes();
 				String fN = file.getName();
 				String oN = file.getOriginalFilename();
-				vendor.setDocByteArray(data);
-				vendor.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
+				if (data.length != 0) {
+					vendor.setDocByteArray(data);
+					vendor.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -136,7 +138,7 @@ public class AccountController {
 	@RequestMapping(value = "/applyToBeCompany", method = RequestMethod.GET)
 	public ModelAndView applyToBeCompany(HttpSession session) {
 		ModelAndView mav = null;
-		if(session.getAttribute("applied") == "applied") {
+		if (session.getAttribute("applied") == "applied") {
 			return new ModelAndView("redirect:user");
 		}
 		try {
@@ -164,8 +166,10 @@ public class AccountController {
 				byte[] data = file.getBytes();
 				String fN = file.getName();
 				String oN = file.getOriginalFilename();
-				company.setDocByteArray(data);
-				company.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
+				if (data.length != 0) {
+					company.setDocByteArray(data);
+					company.setDocFileExtention(oN.substring(oN.lastIndexOf(".") + 1, oN.length()));
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

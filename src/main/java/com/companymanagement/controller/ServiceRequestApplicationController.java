@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.companymanagement.model.Account;
 import com.companymanagement.model.ServiceRequest;
@@ -74,16 +75,23 @@ public class ServiceRequestApplicationController {
 	public ModelAndView createServiceRequestApplications(
 			@RequestParam(required = false, name = "serviceRequestRegNo") Long srRegNo,
 			@ModelAttribute("serviceRequestApplication") ServiceRequestApplication srApp,
-			@SessionAttribute("account") Account account) throws Exception {
+			@SessionAttribute("account") Account account, RedirectAttributes redir) throws Exception {
 		ModelAndView mav = null;
 		try {
 			Vendor vendor = vendorService.findVendorByAccount(account);
-			srApp.setVendor(vendor);
-			String[] cc = {};
-			notificationService.sendMail("teamgammatest@gmail.com", cc, "Service Request Application sent",
-					"Service Request Application " + srRegNo);
-			serviceRequestService.addServiceRequestApplication(srRegNo, srApp);
+			if (serviceRequestApplicationService.findServiceRequestApplicationByRegNo(
+					Long.parseLong(vendor.getRegNo().toString() + srRegNo.toString())) == null) {
+				srApp.setVendor(vendor);
+				srApp.setRegNo(Long.parseLong(vendor.getRegNo().toString() + srRegNo.toString()));
+				serviceRequestService.addServiceRequestApplication(srRegNo, srApp);
+				String[] cc = {};
+				notificationService.sendMail("teamgammatest@gmail.com", cc, "Service Request Application sent",
+						"Service Request Application " + srRegNo);
+			} else {
+				redir.addFlashAttribute("message", "Service Request Application already submitted.");
+			}
 			mav = new ModelAndView("redirect:vendor");
+
 		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);

@@ -5,10 +5,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQuery(name = "ServiceRequestApplication.findRegNo", query = "SELECT sra FROM ServiceRequestApplication sra WHERE sra.regNo=:regNo")
+@NamedQueries({
+		@NamedQuery(name = "ServiceRequestApplication.findRegNo", query = "SELECT sra FROM ServiceRequestApplication sra WHERE sra.regNo=:regNo"),
+		@NamedQuery(name = "ServiceRequestApplication.findByVendor", query = "SELECT sra FROM ServiceRequestApplication sra WHERE sra.regNo=:regNo") })
 public class ServiceRequestApplication extends Base {
 
 	private static final long serialVersionUID = -266578485313115304L;
@@ -16,7 +19,6 @@ public class ServiceRequestApplication extends Base {
 	@Column(unique = true)
 	private Long regNo;
 	private String name;
-	private String remarks;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Status", referencedColumnName = "name")
@@ -49,14 +51,6 @@ public class ServiceRequestApplication extends Base {
 		this.name = name;
 	}
 
-	public String getRemarks() {
-		return remarks;
-	}
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-
 	public Vendor getVendor() {
 		return vendor;
 	}
@@ -79,7 +73,6 @@ public class ServiceRequestApplication extends Base {
 		int result = super.hashCode();
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((regNo == null) ? 0 : regNo.hashCode());
-		result = prime * result + ((remarks == null) ? 0 : remarks.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((vendor == null) ? 0 : vendor.hashCode());
 		return result;
@@ -104,11 +97,6 @@ public class ServiceRequestApplication extends Base {
 				return false;
 		} else if (!regNo.equals(other.regNo))
 			return false;
-		if (remarks == null) {
-			if (other.remarks != null)
-				return false;
-		} else if (!remarks.equals(other.remarks))
-			return false;
 		if (status == null) {
 			if (other.status != null)
 				return false;
@@ -124,8 +112,8 @@ public class ServiceRequestApplication extends Base {
 
 	@Override
 	public String toString() {
-		return "ServiceRequestApplication [regNo=" + regNo + ", name=" + name + ", remarks=" + remarks + ", status="
-				+ status + ", vendor=" + vendor + "]";
+		return "ServiceRequestApplication [regNo=" + regNo + ", name=" + name + ", status=" + status + ", vendor="
+				+ vendor + "]";
 	}
 
 }

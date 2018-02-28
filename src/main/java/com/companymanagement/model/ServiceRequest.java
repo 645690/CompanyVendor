@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ServiceRequest.findRegNo", query = "SELECT sr FROM ServiceRequest sr WHERE sr.regNo=:regNo"),
+		@NamedQuery(name = "ServiceRequest.findAllByStatus", query = "SELECT sr FROM ServiceRequest sr WHERE sr.status=:status"),
 		@NamedQuery(name = "ServiceRequest.findAllByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company"),
 		@NamedQuery(name = "ServiceRequest.findAllByDepartmentAndCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company AND sr.department=:department OR sr.department=:anyDepartment"),
 		@NamedQuery(name = "ServiceRequest.findByCompanyAndStatus", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company AND sr.status=:status"),

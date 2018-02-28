@@ -35,12 +35,9 @@ public class VendorController {
 		ModelAndView mav = null;
 		try {
 			mav = new ModelAndView("vendor");
-			List<ServiceRequest> srList = serviceRequestService.findAll();
+			List<ServiceRequest> srList = serviceRequestService.findAllPendingServiceRequests();
 			mav.addObject("serviceRequestList", srList);
-
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "Error getting vendor!!");

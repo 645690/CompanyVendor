@@ -17,47 +17,62 @@
     <div class='panel panel-primary'>
       <div class='panel-heading'>Create Employee</div>
       <div class='panel-body'>
-        <form method="post" action="updateEmployee" modelAttribute="employee" modelAttribute="updateEmployee" modelAttribute="departmentList" modelAttribute="accountRoleList">
+        <form method="post" action="updateEmployee"
+          modelAttribute="employee" modelAttribute="updateEmployee"
+          modelAttribute="departmentList"
+          modelAttribute="accountRoleList">
           <div class="form-group">
-            <label for="regNo" class="control-label">Register No</label>
-            <form:input id="regNo" path="updateEmployee.regNo" name="regNo" required="true" value="${employee.regNo}" cssClass="form-control" />
+            <form:input type="hidden" id="regNo"
+              path="updateEmployee.regNo" name="regNo" required="true"
+              value="${employee.regNo}" cssClass="form-control" />
             <span class="help-block"></span>
           </div>
           <div class="form-group">
             <label for="name" class="control-label">Name</label>
-            <form:input id="name" path="updateEmployee.name" name="name" required="true" value="${employee.name}" cssClass="form-control" />
+            <form:input id="name" path="updateEmployee.name" name="name"
+              required="true" value="${employee.name}"
+              cssClass="form-control" />
             <span class="help-block"></span>
           </div>
-           <div class="form-group">
+          <div class="form-group">
             <label for="age" class="control-label">Age</label>
-            <form:input id="age" path="updateEmployee.age" name="age" required="true" value="${employee.age}" cssClass="form-control" />
+            <form:input id="age" path="updateEmployee.age" name="age"
+              required="true" value="${employee.age}"
+              cssClass="form-control" />
             <span class="help-block"></span>
           </div>
           <div class="form-group">
             <label for="contact" class="control-label">Contact</label>
-            <form:input id="contact" path="updateEmployee.contact" name="contact" required="true" value="${employee.contact}" cssClass="form-control" />
+            <form:input id="contact" path="updateEmployee.contact"
+              name="contact" required="true" value="${employee.contact}"
+              cssClass="form-control" />
             <span class="help-block"></span>
           </div>
-		  <div class="form-group">
+          <div class="form-group">
             <label for="department" class="control-label">Department</label>
-            <form:select path="updateEmployee.department.name" cssClass="form-control">
-<%-- 		  <option value="${employee.department.name}" selected disabled hidden>${employee.department.name}</option>	--%>
+            <form:select path="updateEmployee.department.name"
+              cssClass="form-control">
+              <%-- 		  <option value="${employee.department.name}" selected disabled hidden>${employee.department.name}</option>	--%>
               <option selected="selected">${employee.department.name}</option>
-			  <form:options items="${departmentList}" itemValue="name" itemLabel="name" />
+              <form:options items="${departmentList}" itemValue="name"
+                itemLabel="name" />
             </form:select>
             <span class="help-block"></span>
           </div>
-		  <div class="form-group">
+          <div class="form-group">
             <label for="accountRole" class="control-label">Role</label>
-            <form:select path="updateEmployee.account.accountRole.name" cssClass="form-control">
-<%-- 		<option value="${employee.account.accountRole.name}" selected disabled hidden>${employee.account.accountRole.name}</option> --%>
+            <form:select path="updateEmployee.account.accountRole.name"
+              cssClass="form-control">
+              <%-- 		<option value="${employee.account.accountRole.name}" selected disabled hidden>${employee.account.accountRole.name}</option> --%>
               <option selected="selected">${employee.account.accountRole.name}</option>
-			  <form:options items="${accountRoleList}" itemValue="name" itemLabel="name" />
+              <form:options items="${accountRoleList}" itemValue="name"
+                itemLabel="name" />
             </form:select>
             <span class="help-block"></span>
           </div>
-          <button type="submit" class="btn btn-success btn-block">Update Employee</button>
-	  </form>
+          <button type="submit" class="btn btn-success btn-block">Update
+            Employee</button>
+        </form>
       </div>
     </div>
   </div>

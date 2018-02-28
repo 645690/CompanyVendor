@@ -21,6 +21,7 @@ import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
 import com.companymanagement.model.ServiceRequestStatus;
+import com.companymanagement.model.Vendor;
 import com.companymanagement.service.DepartmentService;
 import com.companymanagement.service.ServiceRequestService;
 import com.companymanagement.service.ServiceRequestStatusService;
@@ -192,6 +193,34 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		queryParams.put("status", serviceRequestStatusService.findServiceRequestStatusByName("pending"));
 
 		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findByCompanyAndStatus",
+				queryParams);
+		if (serviceRequests.size() == 0) {
+			return null;
+		}
+		return serviceRequests;
+	}
+
+	@Override
+	@Transactional
+	public List<ServiceRequest> findAllPendingServiceRequests() throws CompanyMgmtException {
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		queryParams.put("status", serviceRequestStatusService.findServiceRequestStatusByName("pending"));
+
+		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findAllByStatus",
+				queryParams);
+		if (serviceRequests.size() == 0) {
+			return null;
+		}
+		return serviceRequests;
+	}
+
+	@Override
+	@Transactional
+	public List<ServiceRequest> findAllAcceptedServiceRequests() throws CompanyMgmtException {
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		queryParams.put("status", serviceRequestStatusService.findServiceRequestStatusByName("accepted"));
+
+		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findAllByStatus",
 				queryParams);
 		if (serviceRequests.size() == 0) {
 			return null;

@@ -14,18 +14,12 @@
   <tags:vendorNav />
   <div class='container'>
     <div class='panel panel-primary'>
-      <div class='panel-heading'>Create Service Request</div>
+      <div class='panel-heading'>Create Service Request
+        Application</div>
       <div class='panel-body'>
         <form method="post"
           action="createNewServiceRequestApplication?serviceRequestRegNo=${serviceRequestRegNo}"
           modelAttribute="serviceRequestApplication">
-          <div class="form-group">
-            <label for="regNo" class="control-label">Register No</label>
-            <form:input id="regNo"
-              path="serviceRequestApplication.regNo" name="regNo"
-              required="true" cssClass="form-control" />
-            <span class="help-block"></span>
-          </div>
           <div class="form-group">
             <label for="name" class="control-label">Name</label>
             <form:input id="name" path="serviceRequestApplication.name"

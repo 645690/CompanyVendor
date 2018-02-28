@@ -7,6 +7,7 @@ import com.companymanagement.model.Company;
 import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
+import com.companymanagement.model.Vendor;
 
 public interface ServiceRequestService extends BaseService {
 
@@ -33,5 +34,9 @@ public interface ServiceRequestService extends BaseService {
 	void acceptServiceRequest(Long srRegNo) throws CompanyMgmtException;
 
 	void rejectServiceRequest(Long srRegNo) throws CompanyMgmtException;
+
+	List<ServiceRequest> findAllPendingServiceRequests() throws CompanyMgmtException;
+
+	List<ServiceRequest> findAllAcceptedServiceRequests() throws CompanyMgmtException;
 
 }

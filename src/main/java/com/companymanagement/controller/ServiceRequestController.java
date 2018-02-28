@@ -1,5 +1,7 @@
 package com.companymanagement.controller;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +72,21 @@ public class ServiceRequestController {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "SRcontroller createNewServiceRequest");
+		}
+		return mav;
+	}
+
+	@RequestMapping(value = "/viewAllAcceptedServiceRequests", method = RequestMethod.GET)
+	public ModelAndView viewAllAccepted() {
+		ModelAndView mav = null;
+		try {
+			mav = new ModelAndView("viewAllAcceptedServiceRequests");
+			List<ServiceRequest> srList = serviceRequestService.findAllAcceptedServiceRequests();
+			mav.addObject("serviceRequestList", srList);
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "Error getting vendor!!");
 		}
 		return mav;
 	}
