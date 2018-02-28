@@ -65,4 +65,14 @@ public class AccountRoleServiceImpl extends BaseServiceImpl<Long, AccountRole> i
 		return accountRole.get(0);
 	}
 
+	@Override
+	public List<AccountRole> findCompanyAdminAndEmployee() throws CompanyMgmtException {
+		Map<String, String> queryParams = new HashMap<String, String>();
+		List<AccountRole> accountRoles = findByNamedQueryAndNamedParams("AccountRole.findCompanyadminAndEmployee",
+				queryParams);
+		if (accountRoles.size() == 0) {
+			throw new CompanyMgmtException("companyadmin and employee doesn't exists");
+		}
+		return accountRoles;
+	}
 }

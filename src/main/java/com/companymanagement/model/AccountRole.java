@@ -2,10 +2,12 @@ package com.companymanagement.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQuery(name = "AccountRole.findName", query = "SELECT ar FROM AccountRole ar WHERE ar.name=:name")
+@NamedQueries({ @NamedQuery(name = "AccountRole.findName", query = "SELECT ar FROM AccountRole ar WHERE ar.name=:name"),
+		@NamedQuery(name = "AccountRole.findCompanyadminAndEmployee", query = "SELECT ar FROM AccountRole ar WHERE ar.name='companyadmin' OR ar.name='employee'") })
 public class AccountRole extends Base {
 
 	private static final long serialVersionUID = -2068169969623421237L;

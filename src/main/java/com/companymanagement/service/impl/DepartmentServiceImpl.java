@@ -65,4 +65,14 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Long, Department> imp
 		return department.get(0);
 	}
 
+	@Override
+	public List<Department> findAllAllowedDepartments() throws CompanyMgmtException {
+		Map<String, String> queryParams = new HashMap<String, String>();
+		List<Department> departments = findByNamedQueryAndNamedParams("Department.findAllAllowed", queryParams);
+		if (departments.size() == 0) {
+			return null;
+		}
+		return departments;
+	}
+
 }

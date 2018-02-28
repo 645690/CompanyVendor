@@ -94,7 +94,7 @@ public class EmployeeController {
 
 	@RequestMapping(value = "/createEmployee", method = RequestMethod.GET)
 	public ModelAndView createEmployee() {
-		List<Department> departmentList = departmentService.findAll();
+		List<Department> departmentList = departmentService.findAllAllowedDepartments();
 		ModelAndView mav = new ModelAndView("createEmployee");
 		mav.addObject("employee", new Employee());
 		mav.addObject("permission", new Permission());
@@ -114,7 +114,7 @@ public class EmployeeController {
 			if (emp == null) {
 				Account account = accountService.findAccountByUsername(employee.getAccount().getUsername());
 				if (account != null) {
-					List<Department> departmentList = departmentService.findAll();
+					List<Department> departmentList = departmentService.findAllAllowedDepartments();
 					mav = new ModelAndView("createEmployee");
 					mav.addObject("employee", new Employee());
 					mav.addObject("permission", new Permission());
@@ -189,13 +189,13 @@ public class EmployeeController {
 
 		try {
 			Employee employee = employeeService.findEmployeeByRegNo(regNo);
-			List<Department> departmentList = departmentService.findAll();
+			List<Department> departmentList = departmentService.findAllAllowedDepartments();
 			for (int i = 0; i < departmentList.size(); i++) {
 				if (departmentList.get(i).getName().equals(employee.getDepartment().getName())) {
 					departmentList.remove(i);
 				}
 			}
-			List<AccountRole> accountRoleList = accountRoleService.findAll();
+			List<AccountRole> accountRoleList = accountRoleService.findCompanyAdminAndEmployee();
 			for (int i = 0; i < accountRoleList.size(); i++) {
 				if (accountRoleList.get(i).getName().equals(employee.getAccount().getAccountRole().getName())) {
 					accountRoleList.remove(i);

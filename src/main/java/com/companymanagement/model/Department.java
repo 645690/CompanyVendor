@@ -2,10 +2,12 @@ package com.companymanagement.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 @Entity
-@NamedQuery(name = "Department.findName", query = "SELECT d FROM Department d WHERE d.name=:name")
+@NamedQueries({ @NamedQuery(name = "Department.findName", query = "SELECT d FROM Department d WHERE d.name=:name"),
+		@NamedQuery(name = "Department.findAllAllowed", query = "SELECT d FROM Department d WHERE d.name<>'Any'") })
 public class Department extends Base {
 
 	private static final long serialVersionUID = 2935240137826606152L;
