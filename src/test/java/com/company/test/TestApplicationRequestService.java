@@ -50,7 +50,7 @@ public class TestApplicationRequestService {
 	@Rollback(value=false)
 	public void testCategoryCreation(){
 		ApplicationCategory category = new ApplicationCategory();
-		category.setCategoryName("Business");
+		category.setCategoryName("IT");
 		category.setCreatedBy("ARS");
 		category.setCreatedDate(new Date());
 		categoryService.saveOrUpdate(category);
@@ -60,7 +60,7 @@ public class TestApplicationRequestService {
 	@Rollback(value=false)
 	public void testStatusCreation(){
 		ApplicationStatus status = new ApplicationStatus();
-		status.setStatusName("approved");
+		status.setStatusName("pending");
 		status.setCreatedBy("ARS");
 		status.setCreatedDate(new Date());
 		statusService.saveOrUpdate(status);
