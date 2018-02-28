@@ -19,8 +19,9 @@
           <tr>
             <th>Reg No</th>
             <th>Name</th>
+            <th>Documents</th>
             <th>Status</th>
-<!--             <th>Action</th> -->
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -28,10 +29,11 @@
             <tr>
               <td>${company.regNo}</td>
               <td>${company.name}</td>
+              <td><a href="${company.docFileUrl}" target="_blank">${company.docFileUrl}</a></td>
               <td>${company.status}</td>
-<%--               <td style="width: 10%"><a
+              <td style="width: 10%"><a
                 href="viewCompany?regNo=${company.regNo}"><button
-                    class='btn btn-primary'>View Info</button></a></td> --%>
+                    class='btn btn-primary'>View Info</button></a></td>
             </tr>
           </c:forEach>
         </tbody>

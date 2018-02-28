@@ -1,6 +1,8 @@
 package com.companymanagement.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,10 +61,19 @@ public class AccountController {
 	NotificationService notificationService;
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
-	public ModelAndView showUser() {
+	public ModelAndView showUser(HttpSession session) {
 		ModelAndView mav = null;
 		try {
 			mav = new ModelAndView("user");
+			Account account = (Account) session.getAttribute("Account");
+			Vendor vendor = vendorService.findVendorByAccount(account);
+			Company company = companyService.findCompanyByAccount(account);
+			if(company != null || vendor != null) {
+				session.setAttribute("applied", "applied");
+			}
+			mav.addObject("company",company);
+			mav.addObject("vendor",vendor);
+			
 		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
@@ -73,8 +84,11 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/applyToBeVendor", method = RequestMethod.GET)
-	public ModelAndView applyToBeVendor() {
+	public ModelAndView applyToBeVendor(HttpSession session) {
 		ModelAndView mav = null;
+		if(session.getAttribute("applied") == "applied") {
+			return new ModelAndView("redirect:user");
+		}
 		try {
 			mav = new ModelAndView("applyToBeVendor");
 			mav.addObject("vendor", new Vendor());
@@ -120,8 +134,11 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/applyToBeCompany", method = RequestMethod.GET)
-	public ModelAndView applyToBeCompany() {
+	public ModelAndView applyToBeCompany(HttpSession session) {
 		ModelAndView mav = null;
+		if(session.getAttribute("applied") == "applied") {
+			return new ModelAndView("redirect:user");
+		}
 		try {
 			mav = new ModelAndView("applyToBeCompany");
 			mav.addObject("company", new Company());

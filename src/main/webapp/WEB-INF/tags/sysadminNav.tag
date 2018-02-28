@@ -8,8 +8,8 @@
           Department</a></li>
       <li><a href="createNotificationType">Create
           Notification</a></li>
-      <li><a href="viewPendingVendorApplicants">View
-          pending Vendor applicants</a></li>
+      <li><a href="viewPendingVendorApplicants">Vendor Applicants</a></li>
+      <li><a href="viewPendingCompanyApplicants">Company Applicants</a></li>
       <li><a href="viewAllVendors">View all Vendor
           applicants</a></li>
     </ul>

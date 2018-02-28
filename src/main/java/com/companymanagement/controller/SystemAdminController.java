@@ -140,6 +140,21 @@ public class SystemAdminController {
 		}
 		return mav;
 	}
+	
+	@RequestMapping(value = "/viewPendingCompanyApplicants", method = RequestMethod.GET)
+	public ModelAndView viewPendingUserCompany() {
+		ModelAndView mav = null;
+		try {
+		mav = new ModelAndView("viewPendingCompanyApplicants");
+		List<Company> cList = companyService.findCompaniesByStatus("pending");
+		mav.addObject("companyList", cList);
+		}catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "system admin viewPendingCompanyApplicants");
+		}
+		return mav;
+	}
 
 	@RequestMapping(value = "/viewVendorApplicantDetails", method = RequestMethod.GET)
 	public ModelAndView viewVendorApplicantDetails(@RequestParam(required = false, name = "regNo") Long regNo) {

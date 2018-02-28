@@ -24,7 +24,7 @@
             <th>Status</th>
             <th>TurnOver</th>
             <th>Vendor Document</th>
-            <th colspan="2">Action</th>
+            <!-- <th colspan="2">Action</th> -->
           </tr>
         </thead>
         <tbody>
@@ -37,9 +37,9 @@
               <td>${vendor.status}</td>
               <td>${vendor.turnover}</td>
               <td><a href="${vendor.docFileUrl}" target="_blank">${vendor.docFileUrl}</a></td>
-              <td style="width: 10%"><a
+            <%--   <td style="width: 10%"><a
                 href="viewVendorApplicantDetails?regNo=${vendor.regNo}"><button
-                    class='btn btn-primary'>Details</button></a></td>
+                    class='btn btn-primary'>Details</button></a></td> --%>
             </tr>
           </c:forEach>
         </tbody>
