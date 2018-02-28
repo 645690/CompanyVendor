@@ -106,7 +106,7 @@ public class SystemAdminController {
 		}catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "system admin viewcompanyinfo");
+			mav.addObject("message", "system admin rejectCompanyApplicant");
 		}
 		return mav;
 	}
@@ -121,7 +121,7 @@ public class SystemAdminController {
 		}catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "system admin viewcompanyinfo");
+			mav.addObject("message", "system admin viewAllVendors");
 		}
 		return mav;
 	}
@@ -136,7 +136,7 @@ public class SystemAdminController {
 		}catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "system admin viewcompanyinfo");
+			mav.addObject("message", "system admin viewPendingVendorApplicants");
 		}
 		return mav;
 	}
@@ -151,7 +151,7 @@ public class SystemAdminController {
 	}catch (Exception e) {
 		String url = "error";
 		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin viewcompanyinfo");
+		mav.addObject("message", "system admin viewVendorApplicantDetails");
 	}
 		return mav;
 	}
@@ -169,7 +169,7 @@ public class SystemAdminController {
 		}catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "system admin viewcompanyinfo");
+			mav.addObject("message", "system admin acceptVendorApplicant");
 		}
 		return mav;
 	}
@@ -187,7 +187,7 @@ public class SystemAdminController {
 	}catch (Exception e) {
 		String url = "error";
 		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin viewcompanyinfo");
+		mav.addObject("message", "system admin rejectVendorApplicant");
 	}
 		return mav;
 	}
@@ -201,7 +201,7 @@ public class SystemAdminController {
 		}catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "system admin viewcompanyinfo");
+			mav.addObject("message", "system admin createAccountRole");
 		}
 		return mav;
 	}
@@ -215,7 +215,7 @@ public class SystemAdminController {
 	}catch (Exception e) {
 		String url = "error";
 		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin viewcompanyinfo");
+		mav.addObject("message", "system admin createAccountRole submit");
 	}
 		return mav;
 	}
@@ -229,7 +229,7 @@ public class SystemAdminController {
 		}catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "system admin viewcompanyinfo");
+			mav.addObject("message", "system admin createDepartment");
 		}
 		return mav;
 	}
@@ -243,7 +243,7 @@ public class SystemAdminController {
 	}catch (Exception e) {
 		String url = "error";
 		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin viewcompanyinfo");
+		mav.addObject("message", "system admin createDepartment submit");
 	}
 		return mav;
 	}
@@ -257,7 +257,7 @@ public class SystemAdminController {
 		}catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "system admin viewcompanyinfo");
+			mav.addObject("message", "system admin createNotificationType");
 		}
 		return mav;
 	}
@@ -271,7 +271,7 @@ public class SystemAdminController {
 	}catch (Exception e) {
 		String url = "error";
 		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin viewcompanyinfo");
+		mav.addObject("message", "system admin createNotificationType submit");
 	}
 		return mav;
 	}

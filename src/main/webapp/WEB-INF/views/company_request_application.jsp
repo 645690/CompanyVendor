@@ -8,20 +8,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<link
-		href="${pageContext.request.contextPath}/resources/table.css"
-		rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<tags:stylesheet />
 <title>Welcome</title>
 </head>
 <body>
 	  <tags:employeeNav />
 	
-	<div class="modal-body">
+	<div class='container'>
+	<div class='table-responsive'>
 					<h4 align=center>${message}</h4>
-					<table align=center>
+					<table class='table'>
 					<tr>
 					<th>S/N</th>
 					<th>Application No.</th>
@@ -40,16 +36,14 @@
 					<td>${request.appType.categoryName}</td>
 					<td>${request.createdDate}</td>
 					<td>${request.appStatus.statusName}</td>
-					<td><button type="button" name="back" 
+					<td><button type="button" name="back" class='btn btn-primary'
 							onclick="location.href='<c:url value='/request_application?applicationNo=${request.applicationNo}&status=approved'/>'">Approve</button></td>
-					<!-- delete with confirmation-->
-					<td><button type="button" name="back"
+					<td><button type="button" name="back" class='btn btn-primary'
 							onclick="location.href='<c:url value='/request_application?applicationNo=${request.applicationNo}&status=rejected'/>'">Reject</button></td>
-					<!-- normal delete button 
-					<td><a href="<c:url value='/deleteContact/${con.contactId}' />" >Delete</a></td>-->
 					</tr>
 					</c:forEach>
 					</table>
+					</div>
 									</div>
 	
 </body>
