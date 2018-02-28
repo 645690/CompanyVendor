@@ -46,12 +46,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Long, Account> implement
 	@Override
 	@Transactional
 	public void create(Account account) throws CompanyMgmtException {
-		AccountRole role = account.getAccountRole();
-		String accRole = role.getName();
-		role = arService.findAccountRole(role.getName());
-		if (role == null) {
-			role = new AccountRole(accRole);
-		}
+		AccountRole role = arService.findAccountRole("user");
 		account.setAccountRole(role);
 		Account findAccount = findAccountByUsername(account.getUsername());
 		if (findAccount == null) {

@@ -233,7 +233,6 @@ public class AccountController {
 		ModelAndView mav = null;
 		try {
 			try {
-				account.setAccountRole(role);
 				accountService.create(account);
 				String url = "redirect:login";
 				mav = new ModelAndView(url);

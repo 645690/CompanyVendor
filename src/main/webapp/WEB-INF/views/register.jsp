@@ -37,12 +37,6 @@
                       id="password" cssClass="form-control" />
                     <span class="help-block"></span>
                   </div>
-                  <div class="form-group" modelAttribute="role">
-                    <label for="role" class="control-label">Role</label>
-                    <form:input path="role.name" name="role" id="role"
-                      cssClass="form-control" />
-                    <span class="help-block"></span>
-                  </div>
                   <h3>${message}</h3>
                   <button type="submit"
                     class="btn btn-success btn-block">Register</button>
