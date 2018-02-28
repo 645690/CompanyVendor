@@ -14,6 +14,7 @@ import com.companymanagement.model.Account;
 import com.companymanagement.model.AccountRole;
 import com.companymanagement.model.ApplicationCategory;
 import com.companymanagement.model.ApplicationStatus;
+import com.companymanagement.model.Department;
 import com.companymanagement.model.NotificationPreferedType;
 import com.companymanagement.model.ServiceRequestStatus;
 import com.companymanagement.service.AccountRoleService;
@@ -21,6 +22,7 @@ import com.companymanagement.service.AccountService;
 import com.companymanagement.service.ApplicationCategoryService;
 import com.companymanagement.service.ApplicationRequestService;
 import com.companymanagement.service.ApplicationStatusService;
+import com.companymanagement.service.DepartmentService;
 import com.companymanagement.service.NotificationPreferedTypeService;
 import com.companymanagement.service.ServiceRequestStatusService;
 
@@ -49,6 +51,9 @@ public class A_Initialization {
 
 	@Autowired
 	NotificationPreferedTypeService ntpService;
+
+	@Autowired
+	DepartmentService departmentService;
 
 	@Test
 	@Rollback(value = false)
@@ -151,6 +156,20 @@ public class A_Initialization {
 
 		NotificationPreferedType npt1 = new NotificationPreferedType("Email");
 		ntpService.saveOrUpdate(npt1);
+	}
+
+	@Test
+	@Rollback(value = false)
+	public void departmentTest() {
+		Department d = new Department("IT");
+		Department d1 = new Department("HR");
+		Department d2 = new Department("Any");
+		Department d3 = new Department("Operations");
+
+		departmentService.saveOrUpdate(d);
+		departmentService.saveOrUpdate(d1);
+		departmentService.saveOrUpdate(d2);
+		departmentService.saveOrUpdate(d3);
 	}
 
 }

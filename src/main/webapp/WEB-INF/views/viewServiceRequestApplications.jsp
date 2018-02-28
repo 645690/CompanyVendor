@@ -19,8 +19,8 @@
           <tr>
             <th>Reg No</th>
             <th>Name</th>
-            <th>Category</th>
             <th>Vendor</th>
+            <th>Status</th>
             <th colspan=2>Action</th>
           </tr>
         </thead>
@@ -30,7 +30,6 @@
             <tr>
               <td>${serviceRequestApplication.regNo}</td>
               <td>${serviceRequestApplication.name}</td>
-              <td>${serviceRequestApplication.category.name}</td>
               <td>${serviceRequestApplication.vendor.name}</td>
               <td>${serviceRequestApplication.status.name}</td>
               <td style="width: 10%"><a

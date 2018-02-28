@@ -30,12 +30,6 @@
               required="true" cssClass="form-control" />
             <span class="help-block"></span>
           </div>
-          <div class="form-group">
-            <label for="name" class="control-label">Category</label>
-            <form:input id="name" path="serviceRequest.category.name"
-              name="name" required="true" cssClass="form-control" />
-            <span class="help-block"></span>
-          </div>
           <button type="submit" class="btn btn-success btn-block">Create
             Service Request</button>
         </form>
