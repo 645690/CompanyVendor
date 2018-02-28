@@ -17,7 +17,6 @@ import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.service.CompanyService;
 import com.companymanagement.service.EmployeeService;
-import com.companymanagement.service.ServiceRequestCategoryService;
 import com.companymanagement.service.ServiceRequestService;
 import com.companymanagement.service.ServiceRequestStatusService;
 
@@ -29,9 +28,6 @@ public class ServiceRequestController {
 
 	@Autowired
 	ServiceRequestStatusService srss;
-
-	@Autowired
-	ServiceRequestCategoryService srcs;
 
 	@Autowired
 	EmployeeService employeeService;

@@ -20,9 +20,14 @@ public interface ServiceRequestService extends BaseService {
 
 	void addServiceRequestApplication(Long srRegNo, ServiceRequestApplication srApp) throws CompanyMgmtException;
 
-	List<ServiceRequest> findServiceRequestsByCompany(Company company) throws CompanyMgmtException;
+	List<ServiceRequest> findAllServiceRequestsByCompany(Company company) throws CompanyMgmtException;
 
-	List<ServiceRequest> findServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
+	List<ServiceRequest> findAllServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
+			throws CompanyMgmtException;
+
+	List<ServiceRequest> findPendingServiceRequestsByCompany(Company company) throws CompanyMgmtException;
+
+	List<ServiceRequest> findPendingServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
 			throws CompanyMgmtException;
 
 	void acceptServiceRequest(Long srRegNo) throws CompanyMgmtException;

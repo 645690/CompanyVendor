@@ -22,16 +22,18 @@ public class AccountRoleTest {
 	@Test
 	@Rollback(value = false)
 	public void createRole() {
-		AccountRole ar1 = new AccountRole("Admin");
-		AccountRole ar2 = new AccountRole("Vendor");
-		AccountRole ar3 = new AccountRole("User");
-		AccountRole ar4 = new AccountRole("Company");
+		AccountRole ar1 = new AccountRole("systemdmin");
+		AccountRole ar2 = new AccountRole("vendor");
+		AccountRole ar3 = new AccountRole("user");
+		AccountRole ar4 = new AccountRole("companyadmin");
+		AccountRole ar5 = new AccountRole("employee");
 		
 		
 		accountRoleService.saveOrUpdate(ar1);
 		accountRoleService.saveOrUpdate(ar2);
 		accountRoleService.saveOrUpdate(ar3);
 		accountRoleService.saveOrUpdate(ar4);
+		accountRoleService.saveOrUpdate(ar5);
 	}
 
 }

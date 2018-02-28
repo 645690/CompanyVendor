@@ -57,20 +57,18 @@ public class EmployeeController {
 	@RequestMapping(value = "/company", method = RequestMethod.GET)
 	public ModelAndView showCompany(@SessionAttribute("account") Account account) {
 		ModelAndView mav = null;
-		try
-		{
+		try {
 			List<ServiceRequest> srList = null;
 			if (account.getAccountRole().getName().equalsIgnoreCase("employee")) {
 				Employee employee = employeeService.findEmployeeByAccount(account);
-				srList = serviceRequestService.findServiceRequestsByEmployeeDepartmentAndCompany(employee);
+				srList = serviceRequestService.findPendingServiceRequestsByEmployeeDepartmentAndCompany(employee);
 			} else {
 				Company company = companyService.findCompanyByAccount(account);
-				srList = serviceRequestService.findServiceRequestsByCompany(company);
+				srList = serviceRequestService.findPendingServiceRequestsByCompany(company);
 			}
 			mav = new ModelAndView("company");
 			mav.addObject("serviceRequestList", srList);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "showCompany");
@@ -81,14 +79,12 @@ public class EmployeeController {
 	@RequestMapping(value = "/employeeprofile", method = RequestMethod.GET)
 	public ModelAndView showProfile(@SessionAttribute("account") Account account) {
 		ModelAndView mav = null;
-		
-		try
-		{
+
+		try {
 			Employee employee = employeeService.findEmployeeByAccount(account);
 			mav = new ModelAndView("employeeprofile");
 			mav.addObject("employee", employee);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "showProfile");
@@ -111,9 +107,8 @@ public class EmployeeController {
 	public ModelAndView createNewEmployee(@SessionAttribute("account") Account compAdminAccount,
 			@ModelAttribute("employee") Employee employee, @ModelAttribute("permission") Permission permission)
 			throws Exception {
-		ModelAndView mav = null;		
-		try
-		{
+		ModelAndView mav = null;
+		try {
 			Employee emp = employeeService.findEmployeeByRegNo(employee.getRegNo());
 
 			if (emp == null) {
@@ -154,16 +149,14 @@ public class EmployeeController {
 					mav = new ModelAndView("redirect:company");
 				}
 			}
-			
+
 			if (emp != null) {
 				mav = new ModelAndView("createEmployee");
 				mav.addObject("employee", new Employee());
 				mav.addObject("permission", new Permission());
 				mav.addObject("message", "Employee Registration No already exists!!");
 			}
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "createNewEmployee");
@@ -175,16 +168,14 @@ public class EmployeeController {
 	@RequestMapping(value = "/viewAllEmployees", method = RequestMethod.GET)
 	public ModelAndView viewAllEmployees(@SessionAttribute("account") Account compAdminAccount) {
 		ModelAndView mav = null;
-		
-		try
-		{
+
+		try {
 			compAdminAccount = accountService.findAccountByUsername(compAdminAccount.getUsername());
 			Company company = companyService.findCompanyByAccount(compAdminAccount);
 			List<Employee> employeeList = employeeService.findEmployeeByCompany(company);
 			mav = new ModelAndView("viewAllEmployees");
 			mav.addObject("employeeList", employeeList);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "viewAllEmployees");
@@ -195,9 +186,8 @@ public class EmployeeController {
 	@RequestMapping(value = "/viewEmployeeDetails", method = RequestMethod.GET)
 	public ModelAndView viewEmployeeDetails(@RequestParam(required = false, name = "regNo") Long regNo) {
 		ModelAndView mav = null;
-		
-		try
-		{
+
+		try {
 			Employee employee = employeeService.findEmployeeByRegNo(regNo);
 			List<Department> departmentList = departmentService.findAll();
 			for (int i = 0; i < departmentList.size(); i++) {
@@ -211,14 +201,13 @@ public class EmployeeController {
 					accountRoleList.remove(i);
 				}
 			}
-			
+
 			mav = new ModelAndView("viewEmployeeDetails");
 			mav.addObject("employee", employee);
 			mav.addObject("updateEmployee", new Employee());
 			mav.addObject("departmentList", departmentList);
 			mav.addObject("accountRoleList", accountRoleList);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "viewEmployeeDetails");
@@ -230,19 +219,18 @@ public class EmployeeController {
 	@RequestMapping(value = "/updateEmployee", method = RequestMethod.POST)
 	public ModelAndView updateEmployee(@ModelAttribute("updateEmployee") Employee employee) {
 		ModelAndView mav = null;
-		
-		try
-		{
+
+		try {
 			Department department = departmentService.findDepartment(employee.getDepartment().getName());
-			AccountRole accountRole = accountRoleService.findAccountRole(employee.getAccount().getAccountRole().getName());
+			AccountRole accountRole = accountRoleService
+					.findAccountRole(employee.getAccount().getAccountRole().getName());
 			Account account = new Account();
 			account.setAccountRole(accountRole);
 			employee.setDepartment(department);
 			employee.setAccount(account);
 			employeeService.saveOrUpdate(employee);
 			mav = new ModelAndView("redirect:company");
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "updateEmployee");

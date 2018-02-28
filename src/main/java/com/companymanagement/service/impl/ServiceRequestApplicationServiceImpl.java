@@ -55,7 +55,6 @@ public class ServiceRequestApplicationServiceImpl extends BaseServiceImpl<Long, 
 		if (findServiceRequestApplication != null) {
 			findServiceRequestApplication.setName(serviceRequestApplication.getName());
 			findServiceRequestApplication.setStatus(serviceRequestApplication.getStatus());
-			findServiceRequestApplication.setCategory(serviceRequestApplication.getCategory());
 			dao.merge(findServiceRequestApplication);
 		} else {
 			dao.persist(serviceRequestApplication);

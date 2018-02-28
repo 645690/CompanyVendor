@@ -23,10 +23,6 @@ public class ServiceRequestApplication extends Base {
 	private ServiceRequestStatus status;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "Category", referencedColumnName = "name")
-	private ServiceRequestCategory category;
-
-	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "Vendor_regNo", referencedColumnName = "regNo")
 	private Vendor vendor;
 
@@ -77,19 +73,10 @@ public class ServiceRequestApplication extends Base {
 		this.status = status;
 	}
 
-	public ServiceRequestCategory getCategory() {
-		return category;
-	}
-
-	public void setCategory(ServiceRequestCategory category) {
-		this.category = category;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((regNo == null) ? 0 : regNo.hashCode());
 		result = prime * result + ((remarks == null) ? 0 : remarks.hashCode());
@@ -107,11 +94,6 @@ public class ServiceRequestApplication extends Base {
 		if (getClass() != obj.getClass())
 			return false;
 		ServiceRequestApplication other = (ServiceRequestApplication) obj;
-		if (category == null) {
-			if (other.category != null)
-				return false;
-		} else if (!category.equals(other.category))
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -138,6 +120,12 @@ public class ServiceRequestApplication extends Base {
 		} else if (!vendor.equals(other.vendor))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceRequestApplication [regNo=" + regNo + ", name=" + name + ", remarks=" + remarks + ", status="
+				+ status + ", vendor=" + vendor + "]";
 	}
 
 }

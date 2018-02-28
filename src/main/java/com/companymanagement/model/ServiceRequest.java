@@ -14,8 +14,10 @@ import javax.persistence.OneToMany;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "ServiceRequest.findRegNo", query = "SELECT sr FROM ServiceRequest sr WHERE sr.regNo=:regNo"),
-		@NamedQuery(name = "ServiceRequest.findByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company"),
-		@NamedQuery(name = "ServiceRequest.findByDepartmentAndCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company AND sr.department=:department OR sr.department=:anyDepartment") })
+		@NamedQuery(name = "ServiceRequest.findAllByCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company"),
+		@NamedQuery(name = "ServiceRequest.findAllByDepartmentAndCompany", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company AND sr.department=:department OR sr.department=:anyDepartment"),
+		@NamedQuery(name = "ServiceRequest.findByCompanyAndStatus", query = "SELECT sr FROM ServiceRequest sr WHERE sr.company=:company AND sr.status=:status"),
+		@NamedQuery(name = "ServiceRequest.findByDepartmentAndCompanyAndStatus", query = "SELECT sr FROM ServiceRequest sr WHERE sr.status=:status AND sr.company=:company AND sr.department=:department OR sr.department=:anyDepartment") })
 public class ServiceRequest extends Base {
 
 	private static final long serialVersionUID = -4697330149497262611L;
@@ -34,10 +36,6 @@ public class ServiceRequest extends Base {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "Status", referencedColumnName = "name")
 	private ServiceRequestStatus status;
-
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "Category", referencedColumnName = "name")
-	private ServiceRequestCategory category;
 
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "Department", referencedColumnName = "name")
@@ -91,14 +89,6 @@ public class ServiceRequest extends Base {
 		this.status = serviceRequestStatus;
 	}
 
-	public ServiceRequestCategory getCategory() {
-		return category;
-	}
-
-	public void setCategory(ServiceRequestCategory serviceRequestCategory) {
-		this.category = serviceRequestCategory;
-	}
-
 	public void addServiceRequestApplication(ServiceRequestApplication sra) {
 		srAppList.add(sra);
 	}
@@ -115,7 +105,6 @@ public class ServiceRequest extends Base {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((company == null) ? 0 : company.hashCode());
 		result = prime * result + ((department == null) ? 0 : department.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -134,11 +123,6 @@ public class ServiceRequest extends Base {
 		if (getClass() != obj.getClass())
 			return false;
 		ServiceRequest other = (ServiceRequest) obj;
-		if (category == null) {
-			if (other.category != null)
-				return false;
-		} else if (!category.equals(other.category))
-			return false;
 		if (company == null) {
 			if (other.company != null)
 				return false;
@@ -175,7 +159,7 @@ public class ServiceRequest extends Base {
 	@Override
 	public String toString() {
 		return "ServiceRequest [regNo=" + regNo + ", name=" + name + ", srAppList=" + srAppList + ", company=" + company
-				+ ", status=" + status + ", category=" + category + ", department=" + department + "]";
+				+ ", status=" + status + ", department=" + department + "]";
 	}
 
 }

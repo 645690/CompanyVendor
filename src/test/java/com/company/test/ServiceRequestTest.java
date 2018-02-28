@@ -10,11 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
-import com.companymanagement.model.ServiceRequestCategory;
 import com.companymanagement.model.ServiceRequestStatus;
 import com.companymanagement.service.CompanyService;
 import com.companymanagement.service.ServiceRequestApplicationService;
-import com.companymanagement.service.ServiceRequestCategoryService;
 import com.companymanagement.service.ServiceRequestService;
 import com.companymanagement.service.ServiceRequestStatusService;
 
@@ -28,9 +26,6 @@ public class ServiceRequestTest {
 
 	@Autowired
 	ServiceRequestStatusService srss;
-
-	@Autowired
-	ServiceRequestCategoryService srcs;
 
 	@Autowired
 	ServiceRequestApplicationService sras;
@@ -47,11 +42,6 @@ public class ServiceRequestTest {
 		srss.saveOrUpdate(srStatus2);
 		ServiceRequestStatus srStatus3 = new ServiceRequestStatus("Rejected");
 		srss.saveOrUpdate(srStatus3);
-
-		ServiceRequestCategory srCat = new ServiceRequestCategory("IT");
-		srcs.saveOrUpdate(srCat);
-		ServiceRequestCategory srCat2 = new ServiceRequestCategory("HR");
-		srcs.saveOrUpdate(srCat2);
 	}
 
 	@Test
@@ -83,15 +73,10 @@ public class ServiceRequestTest {
 		ServiceRequestStatus srStatus = srss.findServiceRequestStatusByName("pending");
 		ServiceRequestStatus srStatus2 = srss.findServiceRequestStatusByName("accepted");
 
-		ServiceRequestCategory srCat = srcs.findServiceRequestCategoryByName("IT");
-		ServiceRequestCategory srCat2 = srcs.findServiceRequestCategoryByName("HR");
-
 		sr.setStatus(srStatus);
-		sr.setCategory(srCat);
 		sr.addServiceRequestApplication(srApp);
 
 		sr2.setStatus(srStatus);
-		sr2.setCategory(srCat);
 		sr2.addServiceRequestApplication(srApp2);
 
 		srs.saveOrUpdate(sr);
@@ -107,17 +92,11 @@ public class ServiceRequestTest {
 		ServiceRequestStatus srStatus = srss.findServiceRequestStatusByName("pending");
 		ServiceRequestStatus srStatus2 = srss.findServiceRequestStatusByName("accepted");
 
-		ServiceRequestCategory srCat = srcs.findServiceRequestCategoryByName("IT");
-		ServiceRequestCategory srCat2 = srcs.findServiceRequestCategoryByName("HR");
-
 		ServiceRequestApplication srApp = sras.findServiceRequestApplicationByRegNo(1L);
 		ServiceRequestApplication srApp2 = sras.findServiceRequestApplicationByRegNo(2L);
 
 		sr.setStatus(srStatus);
 		sr2.setStatus(srStatus);
-
-		sr.setCategory(srCat);
-		sr2.setCategory(srCat);
 
 		sr.setCompany(companyService.findCompanyByRegNo(4L));
 		sr2.setCompany(companyService.findCompanyByRegNo(4L));

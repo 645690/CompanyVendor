@@ -20,10 +20,8 @@ import com.companymanagement.model.Department;
 import com.companymanagement.model.Employee;
 import com.companymanagement.model.ServiceRequest;
 import com.companymanagement.model.ServiceRequestApplication;
-import com.companymanagement.model.ServiceRequestCategory;
 import com.companymanagement.model.ServiceRequestStatus;
 import com.companymanagement.service.DepartmentService;
-import com.companymanagement.service.ServiceRequestCategoryService;
 import com.companymanagement.service.ServiceRequestService;
 import com.companymanagement.service.ServiceRequestStatusService;
 
@@ -32,9 +30,6 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 
 	@Autowired
 	protected ServiceRequestDAO dao;
-
-	@Autowired
-	protected ServiceRequestCategoryService serviceRequestCategoryService;
 
 	@Autowired
 	protected ServiceRequestStatusService serviceRequestStatusService;
@@ -73,9 +68,6 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 	@Override
 	@Transactional
 	public void saveOrUpdate(ServiceRequest serviceRequest) throws CompanyMgmtException {
-		ServiceRequestCategory src = serviceRequestCategoryService
-				.findServiceRequestCategoryByName(serviceRequest.getCategory().getName());
-		serviceRequest.setCategory(src);
 		ServiceRequestStatus srs = serviceRequestStatusService.findServiceRequestStatusByName("Pending");
 		serviceRequest.setStatus(srs);
 		Department department = departmentService.findDepartment(serviceRequest.getDepartment().getName());
@@ -84,27 +76,12 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		if (findServiceRequest != null) {
 			findServiceRequest.setName(serviceRequest.getName());
 			findServiceRequest.setStatus(serviceRequest.getStatus());
-			findServiceRequest.setCategory(serviceRequest.getCategory());
 			findServiceRequest.setDepartment(serviceRequest.getDepartment());
 			findServiceRequest.setSrAppList(serviceRequest.getSrAppList());
 			dao.merge(findServiceRequest);
 		} else {
 			dao.persist(serviceRequest);
 		}
-	}
-
-	@Override
-	@Transactional
-	public List<ServiceRequest> findServiceRequestsByCompany(Company company) throws CompanyMgmtException {
-		Map<String, Company> queryParams = new HashMap<String, Company>();
-		queryParams.put("company", company);
-
-		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findByCompany",
-				queryParams);
-		if (serviceRequests.size() == 0) {
-			return null;
-		}
-		return serviceRequests;
 	}
 
 	@Override
@@ -160,7 +137,7 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 
 	@Override
 	@Transactional
-	public List<ServiceRequest> findServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
+	public List<ServiceRequest> findAllServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
 			throws CompanyMgmtException {
 		Map<String, Object> queryParams = new HashMap<String, Object>();
 		queryParams.put("company", employee.getCompany());
@@ -168,10 +145,58 @@ public class ServiceRequestServiceImpl extends BaseServiceImpl<Long, ServiceRequ
 		queryParams.put("anyDepartment", departmentService.findDepartment("Any"));
 
 		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams(
-				"ServiceRequest.findByDepartmentAndCompany", queryParams);
+				"ServiceRequest.findAllByDepartmentAndCompany", queryParams);
 		if (serviceRequests.size() == 0) {
 			return null;
 		}
 		return serviceRequests;
 	}
+
+	@Override
+	@Transactional
+	public List<ServiceRequest> findPendingServiceRequestsByEmployeeDepartmentAndCompany(Employee employee)
+			throws CompanyMgmtException {
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		queryParams.put("company", employee.getCompany());
+		queryParams.put("department", employee.getDepartment());
+		queryParams.put("anyDepartment", departmentService.findDepartment("Any"));
+		queryParams.put("status", serviceRequestStatusService.findServiceRequestStatusByName("pending"));
+
+		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams(
+				"ServiceRequest.findByDepartmentAndCompanyAndStatus", queryParams);
+		if (serviceRequests.size() == 0) {
+			return null;
+		}
+		return serviceRequests;
+	}
+
+	@Override
+	@Transactional
+	public List<ServiceRequest> findAllServiceRequestsByCompany(Company company) throws CompanyMgmtException {
+		Map<String, Company> queryParams = new HashMap<String, Company>();
+		queryParams.put("company", company);
+
+		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findAllByCompany",
+				queryParams);
+		if (serviceRequests.size() == 0) {
+			return null;
+		}
+		return serviceRequests;
+	}
+
+	@Override
+	@Transactional
+	public List<ServiceRequest> findPendingServiceRequestsByCompany(Company company) throws CompanyMgmtException {
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		queryParams.put("company", company);
+		queryParams.put("status", serviceRequestStatusService.findServiceRequestStatusByName("pending"));
+
+		List<ServiceRequest> serviceRequests = findByNamedQueryAndNamedParams("ServiceRequest.findByCompany",
+				queryParams);
+		if (serviceRequests.size() == 0) {
+			return null;
+		}
+		return serviceRequests;
+	}
+
 }
