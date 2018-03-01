@@ -15,16 +15,12 @@
   <div id="login-overlay" class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Login to
-          MyCompManager.com</h4>
+        <h4 class="modal-title" id="myModalLabel">Login to Company
+          Manager</h4>
       </div>
-      <h4 align=center>${message}</h4>
-
       <div class="modal-body">
-
         <div class="row">
-
-          <div class="col-xs-6">
+          <div class="col">
             <h3 align=center>OTP</h3>
             <div class="well">
               <form id="registerForm" method="post" action="otpProcess"
@@ -36,6 +32,7 @@
                     cssClass="form-control" required="true" />
                   <span class="help-block"></span>
                 </div>
+                <h3 align=center>${message}</h3>
                 <button type="submit" class="btn btn-success btn-block">Submit</button>
               </form>
             </div>

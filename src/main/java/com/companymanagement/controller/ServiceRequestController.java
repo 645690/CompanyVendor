@@ -56,23 +56,17 @@ public class ServiceRequestController {
 	public ModelAndView createNewServiceRequest(@ModelAttribute("serviceRequest") ServiceRequest serviceRequest,
 			@SessionAttribute("account") Account account) {
 		ModelAndView mav = null;
-		try {
-			if (account.getAccountRole().getName().equalsIgnoreCase("employee")) {
-				Employee employee = employeeService.findEmployeeByAccount(account);
-				serviceRequest.setDepartment(employee.getDepartment());
-				serviceRequest.setCompany(employee.getCompany());
-			} else {
-				Company company = companyService.findCompanyByAccount(account);
-				serviceRequest.setCompany(company);
-				serviceRequest.setDepartment(new Department("Any"));
-			}
-			serviceRequestService.saveOrUpdate(serviceRequest);
-			mav = new ModelAndView("redirect:company");
-		} catch (Exception e) {
-			String url = "error";
-			mav = new ModelAndView(url);
-			mav.addObject("message", "SRcontroller createNewServiceRequest");
+		if (account.getAccountRole().getName().equalsIgnoreCase("employee")) {
+			Employee employee = employeeService.findEmployeeByAccount(account);
+			serviceRequest.setDepartment(employee.getDepartment());
+			serviceRequest.setCompany(employee.getCompany());
+		} else {
+			Company company = companyService.findCompanyByAccount(account);
+			serviceRequest.setCompany(company);
+			serviceRequest.setDepartment(new Department("Any"));
 		}
+		serviceRequestService.saveOrUpdate(serviceRequest);
+		mav = new ModelAndView("redirect:company");
 		return mav;
 	}
 

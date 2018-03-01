@@ -46,8 +46,6 @@ public class AccountServiceImpl extends BaseServiceImpl<Long, Account> implement
 	@Override
 	@Transactional
 	public void create(Account account) throws CompanyMgmtException {
-		AccountRole role = arService.findAccountRole("user");
-		account.setAccountRole(role);
 		Account findAccount = findAccountByUsername(account.getUsername());
 		if (findAccount == null) {
 			dao.persist(account);

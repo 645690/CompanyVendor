@@ -57,13 +57,14 @@ public class A_Initialization {
 
 	@Test
 	@Rollback(value = false)
-	public void initialie() {
+	public void initialize() {
 		createRole();
 		createAccount();
 		testCategoryCreation();
 		testStatusCreation();
 		testSRStatusCreation();
 		notificationPreferedType();
+		departmentTest();
 	}
 
 	@Test
@@ -85,7 +86,7 @@ public class A_Initialization {
 	@Test
 	@Rollback(value = false)
 	public void createAccount() {
-		Account acc = new Account("s", "s");
+		Account acc = new Account("songnian.tay@cognizant.com", "s");
 		AccountRole ar = accountRoleService.findAccountRole("systemadmin");
 		acc.setAccountRole(ar);
 		accountService.create(acc);

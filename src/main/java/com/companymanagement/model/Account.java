@@ -30,7 +30,7 @@ public class Account extends Base {
 	private String password;
 	@Transient
 	String token;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "account_Role", referencedColumnName = "name")
 	private AccountRole accountRole;
 
