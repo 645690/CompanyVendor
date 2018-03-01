@@ -13,6 +13,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Transient;
 
+import org.hibernate.validator.constraints.Email;
+
+
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Account.findAccount", query = "SELECT a FROM Account a WHERE a.username=:username AND a.password=:password"),
@@ -22,6 +25,7 @@ public class Account extends Base {
 	private static final long serialVersionUID = 2123344216142245806L;
 
 	@Column(unique = true)
+	@Email
 	private String username;
 	private String password;
 	@Transient

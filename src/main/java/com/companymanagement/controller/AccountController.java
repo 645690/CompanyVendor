@@ -1,17 +1,17 @@
 package com.companymanagement.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.model.Account;
@@ -232,11 +233,15 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
-	public ModelAndView registerProcess(@ModelAttribute("login") Account account,
-			@ModelAttribute("role") AccountRole role) {
+	public ModelAndView registerProcess(@ModelAttribute("login") @Valid Account account,BindingResult result,
+			@ModelAttribute("role") AccountRole role, RedirectAttributes redir) {
 		ModelAndView mav = null;
 		try {
 			try {
+				if(result.hasErrors()){
+					redir.addFlashAttribute("emailerror", "Please enter a valid email");
+					return new ModelAndView("redirect:register");
+				}
 				accountService.create(account);
 				String url = "redirect:login";
 				mav = new ModelAndView(url);

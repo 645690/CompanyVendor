@@ -25,10 +25,12 @@
                 <form id="loginForm" method="post"
                   action="registerProcess" modelAttribute="login">
                   <div class="form-group">
-                    <label for="username" class="control-label">Username</label>
+                    <label for="username" class="control-label">Email</label>
+                    <form:errors path="login.username"/>
                     <form:input path="login.username" name="username"
                       id="username" cssClass="form-control"
                       required="true" />
+                      ${emailerror}
                     <span class="help-block"></span>
                   </div>
                   <div class="form-group">
