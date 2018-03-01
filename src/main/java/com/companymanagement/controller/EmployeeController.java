@@ -145,7 +145,7 @@ public class EmployeeController {
 					employee.setCompany(company);
 					employeeService.saveOrUpdate(employee);
 					String[] cc = {};
-					notificationService.sendMail("teamgammatest@gmail.com", cc, "Employee Account Created",
+					notificationService.sendMail(empAccount.getUsername(), cc, "Employee Account Created",
 							"Your username is: " + empAccount.getUsername());
 					mav = new ModelAndView("redirect:company");
 				}

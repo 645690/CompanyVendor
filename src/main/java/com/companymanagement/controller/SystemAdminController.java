@@ -48,15 +48,15 @@ public class SystemAdminController {
 	@RequestMapping(value = "/systemadmin", method = RequestMethod.GET)
 	public ModelAndView showAllCompany() {
 		ModelAndView mav = null;
-				try {
-		mav = new ModelAndView("systemadmin");
-		List<Company> cList = companyService.findAll();
-		mav.addObject("companyList", cList);
-				}catch (Exception e) {
-					String url = "error";
-					mav = new ModelAndView(url);
-					mav.addObject("message", "system admin showallcompany");
-				}
+		try {
+			mav = new ModelAndView("systemadmin");
+			List<Company> cList = companyService.findAll();
+			mav.addObject("companyList", cList);
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "system admin showallcompany");
+		}
 		return mav;
 	}
 
@@ -64,10 +64,10 @@ public class SystemAdminController {
 	public ModelAndView viewCompanyInfo(@RequestParam(required = false, name = "regNo") Long regNo) {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("viewCompanyApplicantDetails");
-		Company company = companyService.findCompanyByRegNo(regNo);
-		mav.addObject("company", company);
-		}catch (Exception e) {
+			mav = new ModelAndView("viewCompanyApplicantDetails");
+			Company company = companyService.findCompanyByRegNo(regNo);
+			mav.addObject("company", company);
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin viewcompanyinfo");
@@ -80,12 +80,13 @@ public class SystemAdminController {
 			throws Exception {
 		ModelAndView mav = null;
 		try {
-		companyService.acceptByRegNo(regNo);
-		String[] cc = {};
-		notificationService.sendMail("tk125@hotmail.com", cc, "Company Application",
-				"Company application " + regNo + " has been accepted");
-		mav = new ModelAndView("redirect:/systemadmin");
-		}catch (Exception e) {
+			companyService.acceptByRegNo(regNo);
+			Company company = companyService.findCompanyByRegNo(regNo);
+			String[] cc = {};
+			notificationService.sendMail(company.getAccount().getUsername(), cc, "Company Application",
+					"Company application " + regNo + " has been accepted");
+			mav = new ModelAndView("redirect:/systemadmin");
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin acceptCompanyApplicant");
@@ -98,12 +99,13 @@ public class SystemAdminController {
 			throws Exception {
 		ModelAndView mav = null;
 		try {
-		companyService.rejectByRegNo(regNo);
-		String[] cc = {};
-		notificationService.sendMail("tk125@hotmail.com", cc, "Company Application",
-				"Company application " + regNo + " has been rejected");
-		mav = new ModelAndView("redirect:/systemadmin");
-		}catch (Exception e) {
+			companyService.rejectByRegNo(regNo);
+			Company company = companyService.findCompanyByRegNo(regNo);
+			String[] cc = {};
+			notificationService.sendMail(company.getAccount().getUsername(), cc, "Company Application",
+					"Company application " + regNo + " has been rejected");
+			mav = new ModelAndView("redirect:/systemadmin");
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin rejectCompanyApplicant");
@@ -115,10 +117,10 @@ public class SystemAdminController {
 	public ModelAndView viewAllVendors() {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("viewAllVendors");
-		List<Vendor> vList = vendorService.findAll();
-		mav.addObject("vendorList", vList);
-		}catch (Exception e) {
+			mav = new ModelAndView("viewAllVendors");
+			List<Vendor> vList = vendorService.findAll();
+			mav.addObject("vendorList", vList);
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin viewAllVendors");
@@ -130,25 +132,25 @@ public class SystemAdminController {
 	public ModelAndView viewPendingUserVendor() {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("viewPendingVendorApplicants");
-		List<Vendor> vList = vendorService.findVendorsByStatus("pending");
-		mav.addObject("vendorList", vList);
-		}catch (Exception e) {
+			mav = new ModelAndView("viewPendingVendorApplicants");
+			List<Vendor> vList = vendorService.findVendorsByStatus("pending");
+			mav.addObject("vendorList", vList);
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin viewPendingVendorApplicants");
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/viewPendingCompanyApplicants", method = RequestMethod.GET)
 	public ModelAndView viewPendingUserCompany() {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("viewPendingCompanyApplicants");
-		List<Company> cList = companyService.findCompaniesByStatus("pending");
-		mav.addObject("companyList", cList);
-		}catch (Exception e) {
+			mav = new ModelAndView("viewPendingCompanyApplicants");
+			List<Company> cList = companyService.findCompaniesByStatus("pending");
+			mav.addObject("companyList", cList);
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin viewPendingCompanyApplicants");
@@ -160,14 +162,14 @@ public class SystemAdminController {
 	public ModelAndView viewVendorApplicantDetails(@RequestParam(required = false, name = "regNo") Long regNo) {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("viewVendorApplicantDetails");
-		Vendor vendor = vendorService.findVendorByRegNo(regNo);
-		mav.addObject("vendor", vendor);
-	}catch (Exception e) {
-		String url = "error";
-		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin viewVendorApplicantDetails");
-	}
+			mav = new ModelAndView("viewVendorApplicantDetails");
+			Vendor vendor = vendorService.findVendorByRegNo(regNo);
+			mav.addObject("vendor", vendor);
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "system admin viewVendorApplicantDetails");
+		}
 		return mav;
 	}
 
@@ -176,12 +178,13 @@ public class SystemAdminController {
 			throws Exception {
 		ModelAndView mav = null;
 		try {
-		vendorService.acceptByRegNo(regNo);
-		String[] cc = {};
-		notificationService.sendMail("teamgammatest@gmail.com", cc, "Vendor Application",
-				"Vendor application " + regNo + " has been accepted");
-		mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
-		}catch (Exception e) {
+			vendorService.acceptByRegNo(regNo);
+			Vendor vendor = vendorService.findVendorByRegNo(regNo);
+			String[] cc = {};
+			notificationService.sendMail(vendor.getAccount().getUsername(), cc, "Vendor Application",
+					"Vendor application " + regNo + " has been accepted");
+			mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin acceptVendorApplicant");
@@ -194,16 +197,17 @@ public class SystemAdminController {
 			throws Exception {
 		ModelAndView mav = null;
 		try {
-		vendorService.rejectByRegNo(vaRegNo);
-		String[] cc = {};
-		notificationService.sendMail("tk125@hotmail.com", cc, "Vendor Application",
-				"Vendor application " + vaRegNo + " has been rejected");
-		mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
-	}catch (Exception e) {
-		String url = "error";
-		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin rejectVendorApplicant");
-	}
+			vendorService.rejectByRegNo(vaRegNo);
+			Vendor vendor = vendorService.findVendorByRegNo(vaRegNo);
+			String[] cc = {};
+			notificationService.sendMail(vendor.getAccount().getUsername(), cc, "Vendor Application",
+					"Vendor application " + vaRegNo + " has been rejected");
+			mav = new ModelAndView("redirect:/viewPendingVendorApplicants");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "system admin rejectVendorApplicant");
+		}
 		return mav;
 	}
 
@@ -211,9 +215,9 @@ public class SystemAdminController {
 	public ModelAndView createAccountRole() {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("createAccountRole");
-		mav.addObject("accountRole", new AccountRole());
-		}catch (Exception e) {
+			mav = new ModelAndView("createAccountRole");
+			mav.addObject("accountRole", new AccountRole());
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin createAccountRole");
@@ -225,13 +229,13 @@ public class SystemAdminController {
 	public ModelAndView createAccountRoleSubmit(@ModelAttribute("accountRole") AccountRole accountRole) {
 		ModelAndView mav = null;
 		try {
-		arService.saveOrUpdate(accountRole);
-		mav = new ModelAndView("redirect:/systemadmin");
-	}catch (Exception e) {
-		String url = "error";
-		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin createAccountRole submit");
-	}
+			arService.saveOrUpdate(accountRole);
+			mav = new ModelAndView("redirect:/systemadmin");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "system admin createAccountRole submit");
+		}
 		return mav;
 	}
 
@@ -239,9 +243,9 @@ public class SystemAdminController {
 	public ModelAndView createDepartment() {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("createDepartment");
-		mav.addObject("department", new Department());
-		}catch (Exception e) {
+			mav = new ModelAndView("createDepartment");
+			mav.addObject("department", new Department());
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin createDepartment");
@@ -253,13 +257,13 @@ public class SystemAdminController {
 	public ModelAndView createDepartmentSubmit(@ModelAttribute("department") Department department) {
 		ModelAndView mav = null;
 		try {
-		departmentService.saveOrUpdate(department);
-		mav = new ModelAndView("redirect:/systemadmin");
-	}catch (Exception e) {
-		String url = "error";
-		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin createDepartment submit");
-	}
+			departmentService.saveOrUpdate(department);
+			mav = new ModelAndView("redirect:/systemadmin");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "system admin createDepartment submit");
+		}
 		return mav;
 	}
 
@@ -267,9 +271,9 @@ public class SystemAdminController {
 	public ModelAndView createNotification() {
 		ModelAndView mav = null;
 		try {
-		mav = new ModelAndView("createNotificationType");
-		mav.addObject("notification", new NotificationPreferedType());
-		}catch (Exception e) {
+			mav = new ModelAndView("createNotificationType");
+			mav.addObject("notification", new NotificationPreferedType());
+		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
 			mav.addObject("message", "system admin createNotificationType");
@@ -281,13 +285,13 @@ public class SystemAdminController {
 	public ModelAndView createNoticationSubmit(@ModelAttribute("notification") NotificationPreferedType npt) {
 		ModelAndView mav = null;
 		try {
-		nptService.saveOrUpdate(npt);
-		mav = new ModelAndView("redirect:/systemadmin");
-	}catch (Exception e) {
-		String url = "error";
-		mav = new ModelAndView(url);
-		mav.addObject("message", "system admin createNotificationType submit");
-	}
+			nptService.saveOrUpdate(npt);
+			mav = new ModelAndView("redirect:/systemadmin");
+		} catch (Exception e) {
+			String url = "error";
+			mav = new ModelAndView(url);
+			mav.addObject("message", "system admin createNotificationType submit");
+		}
 		return mav;
 	}
 

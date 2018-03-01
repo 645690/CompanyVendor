@@ -88,7 +88,9 @@ public class AccountController {
 	public ModelAndView applyToBeVendor(HttpSession session) {
 		ModelAndView mav = null;
 		if (session.getAttribute("applied") == "applied") {
-			return new ModelAndView("redirect:user");
+			mav = new ModelAndView("redirect:user");
+			mav.addObject("message", "You have already applied to be a Vendor");
+			return mav;
 		}
 		try {
 			mav = new ModelAndView("applyToBeVendor");
@@ -140,7 +142,9 @@ public class AccountController {
 	public ModelAndView applyToBeCompany(HttpSession session) {
 		ModelAndView mav = null;
 		if (session.getAttribute("applied") == "applied") {
-			return new ModelAndView("redirect:user");
+			mav = new ModelAndView("redirect:user");
+			mav.addObject("message", "You have already applied to be a Company");
+			return mav;
 		}
 		try {
 			mav = new ModelAndView("applyToBeCompany");
@@ -233,25 +237,23 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
-	public ModelAndView registerProcess(@ModelAttribute("login") @Valid Account account,BindingResult result,
+	public ModelAndView registerProcess(@ModelAttribute("login") @Valid Account account, BindingResult result,
 			@ModelAttribute("role") AccountRole role, RedirectAttributes redir) {
 		ModelAndView mav = null;
 		try {
-			try {
-				if(result.hasErrors()){
-					redir.addFlashAttribute("emailerror", "Please enter a valid email");
-					return new ModelAndView("redirect:register");
-				}
-				accountService.create(account);
-				String url = "redirect:login";
-				mav = new ModelAndView(url);
-				mav.addObject("login", account);
-			} catch (CompanyMgmtException e) {
-				String url = "register";
-				mav = new ModelAndView(url);
-				mav.addObject("register", new Account());
-				mav.addObject("message", "Username taken");
+			if (result.hasErrors()) {
+				redir.addFlashAttribute("emailerror", "Please enter a valid email");
+				return new ModelAndView("redirect:register");
 			}
+			accountService.create(account);
+			String url = "redirect:login";
+			mav = new ModelAndView(url);
+			mav.addObject("login", account);
+		} catch (CompanyMgmtException e) {
+			String url = "register";
+			mav = new ModelAndView(url);
+			mav.addObject("register", new Account());
+			mav.addObject("message", "Username taken");
 		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
@@ -273,7 +275,7 @@ public class AccountController {
 				Random rand = new Random();
 				String token = String.format("%04d", rand.nextInt(10000));
 				String[] cc = {};
-				notificationService.sendMail("songnian.tay@cognizant.com", cc, "Login OTP", "OTP is " + token);
+				notificationService.sendMail(login.getUsername(), cc, "Login OTP", "OTP is " + token);
 				System.out.println("Token is " + token);
 				session.setAttribute("token", token);
 				session.setAttribute("Account", acc);

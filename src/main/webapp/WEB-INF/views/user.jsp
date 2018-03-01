@@ -26,7 +26,7 @@
         </div>
       </div>
     </div> -->
-
+    <h3>${message}</h3>
     <div class='table-responsive'>
       <table class='table'>
         <thead>
@@ -34,7 +34,7 @@
             <th>Reg No</th>
             <th>Name</th>
             <th>Status</th>
-            <!--             <th>Action</th> -->
+            <!-- <th>Action</th> -->
           </tr>
         </thead>
         <tbody>

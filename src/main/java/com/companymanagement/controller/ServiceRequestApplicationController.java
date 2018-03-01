@@ -84,9 +84,10 @@ public class ServiceRequestApplicationController {
 				srApp.setVendor(vendor);
 				srApp.setRegNo(Long.parseLong(vendor.getRegNo().toString() + srRegNo.toString()));
 				serviceRequestService.addServiceRequestApplication(srRegNo, srApp);
+				ServiceRequest serviceRequest = serviceRequestService.findServiceRequestByRegNo(srRegNo);
 				String[] cc = {};
-				notificationService.sendMail("teamgammatest@gmail.com", cc, "Service Request Application sent",
-						"Service Request Application " + srRegNo);
+				notificationService.sendMail(serviceRequest.getCompany().getAccount().getUsername(), cc,
+						"Service Request Application sent", "Service Request Application " + srRegNo);
 			} else {
 				redir.addFlashAttribute("message", "Service Request Application already submitted.");
 			}
@@ -107,8 +108,11 @@ public class ServiceRequestApplicationController {
 		ModelAndView mav = null;
 		try {
 			serviceRequestApplicationService.acceptServiceRequestApplication(srRegNo, srAppRegNo);
+			ServiceRequestApplication serviceRequestApp = serviceRequestApplicationService
+					.findServiceRequestApplicationByRegNo(srAppRegNo);
 			String[] cc = {};
-			notificationService.sendMail("teamgammatest@gmail.com", cc, "Accepted Service Request Application",
+			notificationService.sendMail(serviceRequestApp.getVendor().getAccount().getUsername(), cc,
+					"Accepted Service Request Application",
 					"Service Request Application " + srAppRegNo + " accepted for Service Request: " + srRegNo);
 			mav = new ModelAndView("redirect:company");
 		} catch (Exception e) {
@@ -126,8 +130,11 @@ public class ServiceRequestApplicationController {
 		ModelAndView mav = null;
 		try {
 			serviceRequestApplicationService.rejectServiceRequestApplication(srRegNo, srAppRegNo);
+			ServiceRequestApplication serviceRequestApp = serviceRequestApplicationService
+					.findServiceRequestApplicationByRegNo(srAppRegNo);
 			String[] cc = {};
-			notificationService.sendMail("teamgammatest@gmail.com", cc, "Rejected Service Request Application",
+			notificationService.sendMail(serviceRequestApp.getVendor().getAccount().getUsername(), cc,
+					"Rejected Service Request Application",
 					"Service Request Application " + srAppRegNo + " rejected for Service Request: " + srRegNo);
 			mav = new ModelAndView("redirect:company");
 		} catch (Exception e) {

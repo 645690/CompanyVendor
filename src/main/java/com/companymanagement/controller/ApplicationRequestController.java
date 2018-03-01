@@ -118,7 +118,7 @@ public class ApplicationRequestController {
 				System.out.println(newRequestApp);
 				requestService.saveOrUpdate(newRequestApp);
 				String[] cc = {};
-				notificationService.sendMail("teamgammatest@gmail.com", cc, "Application Request Sent",
+				notificationService.sendMail(company.getAccount().getUsername(), cc, "Application Request Sent",
 						"Application: " + applicationNo + " has been created.");
 				redir.addFlashAttribute("message", "Application created successfully");
 				return new ModelAndView("redirect:vendor");
@@ -145,8 +145,8 @@ public class ApplicationRequestController {
 				ApplicationStatus existingStatus = statusService.findbyUniqueStatus(status);
 				requestService.updateStatus(existingRequest, existingStatus);
 				String[] cc = {};
-				notificationService.sendMail("teamgammatest@gmail.com", cc, "Application Request Status Updated",
-						"Application: " + applicationNo + " has been " + status);
+				notificationService.sendMail(existingRequest.getVendor().getAccount().getUsername(), cc,
+						"Application Request Status Updated", "Application: " + applicationNo + " has been " + status);
 				redir.addFlashAttribute("error", "The request is updated successfully.");
 				return new ModelAndView("redirect:company");
 			} else {
@@ -172,14 +172,14 @@ public class ApplicationRequestController {
 			HttpServletResponse response, RedirectAttributes redir) throws Exception {
 		ModelAndView mav = null;
 		try {
-				List<ApplicationRequest> requestList;
-				mav = new ModelAndView("all_company_request_application");
-				Company userCompany = (Company) session.getAttribute("company");
-				System.out.println(userCompany.getVenList());
-				ApplicationStatus appStatus = statusService.findbyUniqueStatus("approved");
-				requestList = requestService.findRequestByCompanyAndStatus(userCompany, appStatus);
-				mav.addObject("requestList", requestList);
-			
+			List<ApplicationRequest> requestList;
+			mav = new ModelAndView("all_company_request_application");
+			Company userCompany = (Company) session.getAttribute("company");
+			System.out.println(userCompany.getVenList());
+			ApplicationStatus appStatus = statusService.findbyUniqueStatus("approved");
+			requestList = requestService.findRequestByCompanyAndStatus(userCompany, appStatus);
+			mav.addObject("requestList", requestList);
+
 		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
@@ -188,18 +188,18 @@ public class ApplicationRequestController {
 		return mav;
 
 	}
-	
+
 	@RequestMapping(value = "/submitted_request", method = RequestMethod.GET)
 	public ModelAndView vendorAllRequestApplication(HttpSession session, HttpServletRequest request,
 			HttpServletResponse response, RedirectAttributes redir) throws Exception {
 		ModelAndView mav = null;
 		try {
-				List<ApplicationRequest> requestList;
-				mav = new ModelAndView("vendor_request_application");
-				Vendor vendor = (Vendor) session.getAttribute("vendor");
-				requestList = requestService.findRequestByVendor(vendor);
-				mav.addObject("requestList", requestList);
-			
+			List<ApplicationRequest> requestList;
+			mav = new ModelAndView("vendor_request_application");
+			Vendor vendor = (Vendor) session.getAttribute("vendor");
+			requestList = requestService.findRequestByVendor(vendor);
+			mav.addObject("requestList", requestList);
+
 		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
