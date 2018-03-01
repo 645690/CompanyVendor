@@ -16,7 +16,8 @@
     <div id="login-overlay" class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Register New Account</h4>
+          <h4 class="modal-title" id="myModalLabel">Register New
+            Account</h4>
         </div>
         <div class="modal-body">
           <div class="row">
@@ -26,12 +27,10 @@
                   action="registerProcess" modelAttribute="login">
                   <div class="form-group">
                     <label for="username" class="control-label">Email</label>
-                    <form:errors path="login.username"/>
                     <form:input path="login.username" name="username"
                       id="username" cssClass="form-control"
                       required="true" />
-                      ${emailerror}
-                    <span class="help-block"></span>
+                    ${emailerror} <span class="help-block"></span>
                   </div>
                   <div class="form-group">
                     <label for="password" class="control-label">Password</label>

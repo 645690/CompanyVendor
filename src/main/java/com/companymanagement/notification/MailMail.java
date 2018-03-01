@@ -8,6 +8,7 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 @Service("mailService")
 public class MailMail implements NotificationService {
@@ -27,7 +28,7 @@ public class MailMail implements NotificationService {
 		// SimpleMailMessage message = new SimpleMailMessage();
 		String path = ConfigUtil.getKey("htmlTemplateLocation");
 		// Resource resource = new ClassPathResource(path);
-		String msg1 = FileUtils.readFileToString(new File(path));
+		String msg1 = FileUtils.readFileToString(ResourceUtils.getFile(path));
 
 		msg = msg1.replace("${message}", msg);
 

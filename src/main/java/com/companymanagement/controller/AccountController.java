@@ -237,14 +237,17 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/registerProcess", method = RequestMethod.POST)
-	public ModelAndView registerProcess(@ModelAttribute("login") @Valid Account account, BindingResult result,
-			@ModelAttribute("role") AccountRole role, RedirectAttributes redir) {
+	public ModelAndView registerProcess(@ModelAttribute("login") @Valid Account account, BindingResult result) {
 		ModelAndView mav = null;
 		try {
 			if (result.hasErrors()) {
-				redir.addFlashAttribute("emailerror", "Please enter a valid email");
-				return new ModelAndView("redirect:register");
+				mav = new ModelAndView("register");
+				mav.addObject("register", new Account());
+				mav.addObject("emailerror", "Please enter a valid email");
+				return mav;
 			}
+			AccountRole ar = arService.findAccountRole("user");
+			account.setAccountRole(ar);
 			accountService.create(account);
 			String url = "redirect:login";
 			mav = new ModelAndView(url);
@@ -285,7 +288,8 @@ public class AccountController {
 		} catch (Exception e) {
 			String url = "error";
 			mav = new ModelAndView(url);
-			mav.addObject("message", "Error sending out OTP!!");
+			// mav.addObject("message", "Error sending out OTP!!");
+			mav.addObject("message", e.getMessage());
 		}
 		return mav;
 	}

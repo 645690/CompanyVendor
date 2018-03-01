@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Email;
 
-
 @Entity
 @NamedQueries({
 		@NamedQuery(name = "Account.findAccount", query = "SELECT a FROM Account a WHERE a.username=:username AND a.password=:password"),

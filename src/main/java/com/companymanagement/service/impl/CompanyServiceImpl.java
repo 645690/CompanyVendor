@@ -16,6 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 
 import com.companymanagement.common.CompanyMgmtException;
 import com.companymanagement.dao.CompanyDAO;
@@ -81,7 +82,7 @@ public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implement
 
 	// For uploading of file (6)
 	private String getDocumentURL(Company company) throws IOException {
-		String locToSave = ConfUtil.get("fileServerLocation");
+		String locToSave = ResourceUtils.getFile(ConfUtil.get("fileServerLocation")).getPath();
 		System.out.println(locToSave);
 		if (company.getDocByteArray() != null && company.getDocFileExtention() != null) {
 			String path = locToSave + File.separator + company.getName() + "." + company.getDocFileExtention();
@@ -167,7 +168,7 @@ public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implement
 			dao.remove(findCompany);
 		}
 	}
-	
+
 	@Override
 	public void updateVendorList(Company company, Vendor vendor) throws CompanyMgmtException {
 		List<Vendor> vList;
@@ -187,10 +188,9 @@ public class CompanyServiceImpl extends BaseServiceImpl<Long, Company> implement
 			System.out.println(vList);
 			vList.add(vendor);
 			System.out.println(vList);
-		    List<Vendor> vendorListNoDuplicate = new ArrayList<>(new HashSet<>(vList));
-		 
-			
-//			System.out.println(vList);
+			List<Vendor> vendorListNoDuplicate = new ArrayList<>(new HashSet<>(vList));
+
+			// System.out.println(vList);
 			existingCompany.setVenList(vendorListNoDuplicate);
 			dao.merge(existingCompany);
 		}
